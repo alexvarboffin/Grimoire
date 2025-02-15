@@ -1,0 +1,35 @@
+CREATE TABLE PresetEntity (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    targetDirectory TEXT NOT NULL,
+    fileExtensions TEXT NOT NULL,
+    replacements TEXT NOT NULL
+);
+
+getAllPresets:
+SELECT *
+FROM PresetEntity;
+
+getPresetById:
+SELECT *
+FROM PresetEntity
+WHERE id = ?;
+
+insertPreset:
+INSERT INTO PresetEntity (name, targetDirectory, fileExtensions, replacements)
+VALUES (?, ?, ?, ?);
+
+updatePreset:
+UPDATE PresetEntity
+SET name = ?,
+    targetDirectory = ?,
+    fileExtensions = ?,
+    replacements = ?
+WHERE id = ?;
+
+deletePreset:
+DELETE FROM PresetEntity
+WHERE id = ?;
+
+getLastInsertedId:
+SELECT last_insert_rowid(); 
