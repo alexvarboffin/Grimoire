@@ -15,5 +15,6 @@ data class Preset(
 data class TextReplacement(
     val id: Long = 0,
     val searchPattern: String,
-    val replacement: String
+    val replacement: String,
+    val isRegex: Boolean = false
 ) 

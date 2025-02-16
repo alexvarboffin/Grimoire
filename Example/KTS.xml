@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preset>
+  <name>KTS</name>
+  <targetDirectory>D:\walhalla\Gachi\app</targetDirectory>
+  <fileExtensions>
+    <extension>.kts</extension>
+  </fileExtensions>
+  <replacements>
+    <replacement>
+      <searchPattern><![CDATA[id \'(.*)\']]></searchPattern>
+      <replacement><![CDATA[id("$1")]]></replacement>
+      <isRegex>true</isRegex>
+    </replacement>
+    <replacement>
+      <searchPattern><![CDATA[implementation project\(path\: \'\:(.*)\'\)]]></searchPattern>
+      <replacement><![CDATA[implementation(project(":$1"))]]></replacement>
+      <isRegex>true</isRegex>
+    </replacement>
+    <replacement>
+      <searchPattern><![CDATA[include \'(.*)\']]></searchPattern>
+      <replacement><![CDATA[include("$1")]]></replacement>
+      <isRegex>true</isRegex>
+    </replacement>
+    <replacement>
+      <searchPattern><![CDATA[implementation \'(.*)\']]></searchPattern>
+      <replacement><![CDATA[implementation("$1")]]></replacement>
+      <isRegex>true</isRegex>
+    </replacement>
+    <replacement>
+      <searchPattern><![CDATA[implementation \"(.*)\"]]></searchPattern>
+      <replacement><![CDATA[implementation("$1")]]></replacement>
+      <isRegex>true</isRegex>
+    </replacement>
+    <replacement>
+      <searchPattern><![CDATA[annotationProcessor \'(.*)\']]></searchPattern>
+      <replacement><![CDATA[annotationProcessor("$1")]]></replacement>
+      <isRegex>true</isRegex>
+    </replacement>
+    <replacement>
+      <searchPattern><![CDATA[annotationProcessor \(\'(.*)\'\)]]></searchPattern>
+      <replacement><![CDATA[annotationProcessor("$1")]]></replacement>
+      <isRegex>false</isRegex>
+    </replacement>
+  </replacements>
+</preset>

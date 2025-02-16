@@ -27,6 +27,11 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             
             implementation(libs.room.runtime)
+            implementation(libs.androidx.room.runtime)
+            implementation(libs.sqlite.bundled)
+            implementation(libs.sqlite)
+
+
             implementation(libs.kotlinx.serialization.json)
             
             // Koin

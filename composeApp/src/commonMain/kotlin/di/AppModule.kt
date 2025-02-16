@@ -39,8 +39,8 @@ val appModule = module {
     single { FileProcessor(get()) }
 
     // ViewModels
-    single { PresetListViewModel(get()) }
-    factory { (presetId: Long?) -> PresetEditViewModel(get(), presetId) }
+    single { PresetListViewModel(get(), get()) }
+    factory { (presetId: Long?) -> PresetEditViewModel(get(), presetId, get()) }
 }
 
 fun getRoomDatabase(

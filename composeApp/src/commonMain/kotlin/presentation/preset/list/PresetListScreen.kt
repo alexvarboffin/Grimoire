@@ -6,10 +6,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import domain.model.Preset
@@ -51,7 +53,8 @@ fun PresetListScreen(
                 PresetItem(
                     preset = preset,
                     onPresetClick = { onNavigateToEdit(preset.id) },
-                    onDeleteClick = { viewModel.deletePreset(preset) }
+                    onDeleteClick = { viewModel.deletePreset(preset) },
+                    viewModel = viewModel
                 )
             }
         }
@@ -63,36 +66,61 @@ fun PresetListScreen(
 private fun PresetItem(
     preset: Preset,
     onPresetClick: () -> Unit,
-    onDeleteClick: () -> Unit
+    onDeleteClick: () -> Unit,
+    viewModel: PresetListViewModel
 ) {
+    val isProcessing by viewModel.isProcessing.collectAsState()
+
     Card(
         modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
         onClick = onPresetClick
     ) {
-        Row(
-            modifier = Modifier.padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = preset.name,
-                    style = MaterialTheme.typography.titleMedium
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = "Папка: ${preset.targetDirectory}",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Text(
-                    text = "Расширения: ${preset.fileExtensions.joinToString(", ")}",
-                    style = MaterialTheme.typography.bodySmall
-                )
-            }
-            IconButton(onClick = onDeleteClick) {
-                Icon(
-                    Icons.Default.Delete,
-                    contentDescription = "Удалить пресет"
-                )
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = preset.name,
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = "Папка: ${preset.targetDirectory}",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Text(
+                        text = "Расширения: ${preset.fileExtensions.joinToString(", ")}",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+                Row {
+                    if (isProcessing) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(24.dp),
+                            strokeWidth = 2.dp
+                        )
+                    } else {
+                        IconButton(onClick = { viewModel.applyPreset(preset) }) {
+                            Icon(
+                                Icons.Default.PlayArrow,
+                                contentDescription = "Применить пресет",
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                    }
+                    IconButton(
+                        onClick = onDeleteClick,
+                        enabled = !isProcessing
+                    ) {
+                        Icon(
+                            Icons.Default.Delete,
+                            contentDescription = "Удалить пресет"
+                        )
+                    }
+                }
             }
         }
     }
