@@ -12,9 +12,9 @@ plugins {
 
 kotlin {
 
-    
+
     jvm("desktop")
-    
+
     sourceSets {
         val desktopMain by getting
 
@@ -25,7 +25,7 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-            
+
             implementation(libs.room.runtime)
             implementation(libs.androidx.room.runtime)
             implementation(libs.sqlite.bundled)
@@ -33,14 +33,14 @@ kotlin {
 
 
             implementation(libs.kotlinx.serialization.json)
-            
+
             // Koin
             implementation(libs.koin.core)
             implementation(libs.insert.koin.koin.compose)
-            
+
             // Okio
             implementation("com.squareup.okio:okio:3.9.0")
-            
+
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             // Please do remember to add compose.foundation and compose.animation
@@ -59,6 +59,14 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
             implementation(libs.androidx.sqlite.bundled.jvm)
+        }
+    }
+
+    // macosX64("native") { // on macOS
+    // linuxX64("native") // on Linux
+    mingwX64("native") { // on Windows
+        binaries {
+            executable()
         }
     }
 }
