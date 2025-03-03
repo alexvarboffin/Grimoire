@@ -1,6 +1,8 @@
 :composeApp:run
 gradle nativeBinaries
 gradlew :composeApp:packageDistributionForCurrentOS
+https://material-foundation.github.io/material-theme-builder/
+
 fun compareJSON(json1: String, json2: String): String {
 return try {
 val comparison = JSONCompare.compareJSON(json1, json2, JSONCompareMode.STRICT)

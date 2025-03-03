@@ -27,8 +27,12 @@ class FileProcessor(
 
         var stats = ProcessingStats()
         val files = findFiles(directory, preset.fileExtensions)
-        
+            .filter { path ->
+                fileSystem.metadataOrNull(path)?.isDirectory == false
+            }
+
         files.forEach { file ->
+            println(file)
             val replacementsCount = processFile(file, preset.replacements)
             if (replacementsCount > 0) {
                 stats = stats.copy(
@@ -38,7 +42,7 @@ class FileProcessor(
                 )
             }
         }
-        
+
         stats
     }
 
@@ -49,6 +53,9 @@ class FileProcessor(
                     path.name.endsWith(ext, ignoreCase = true)
                 }
             }
+//            .filter { path ->
+//                fileSystem.metadataOrNull(path)?.isDirectory == false
+//            }
             .toList()
     }
 
@@ -68,7 +75,7 @@ class FileProcessor(
                 replacement.isRegex -> performRegexReplacement(modifiedContent, replacement)
                 else -> performSimpleReplacement(modifiedContent, replacement)
             }
-            
+
             // Обновляем текст и счетчик замен
             modifiedContent = replacementResult.newContent
             totalReplacements += replacementResult.replacementCount
@@ -89,29 +96,35 @@ class FileProcessor(
         val replacementCount: Int
     )
 
-    private fun performRegexReplacement(content: String, replacement: TextReplacement): ReplacementResult {
+    private fun performRegexReplacement(
+        content: String,
+        replacement: TextReplacement
+    ): ReplacementResult {
         val regex = Regex(replacement.searchPattern)
         var count = 0
-        
+
         // Заменяем с подсчетом количества замен
         val newContent = regex.replace(content) { matchResult ->
             count++
             var result = replacement.replacement
-            
+
             // Заменяем все группы захвата ($1, $2, $3, ...) на соответствующие значения
             matchResult.groupValues.forEachIndexed { index, value ->
                 if (index > 0) { // пропускаем нулевую группу, так как она содержит весь матч
                     result = result.replace("\$$index", value)
                 }
             }
-            
+
             result
         }
-        
+
         return ReplacementResult(newContent, count)
     }
 
-    private fun performSimpleReplacement(content: String, replacement: TextReplacement): ReplacementResult {
+    private fun performSimpleReplacement(
+        content: String,
+        replacement: TextReplacement
+    ): ReplacementResult {
         val (newContent, count) = content.replaceWithCount(
             replacement.searchPattern,
             replacement.replacement
@@ -119,7 +132,10 @@ class FileProcessor(
         return ReplacementResult(newContent, count)
     }
 
-    private fun String.replaceWithCount(searchPattern: String, replacement: String): Pair<String, Int> {
+    private fun String.replaceWithCount(
+        searchPattern: String,
+        replacement: String
+    ): Pair<String, Int> {
         var count = 0
         val parts = this.split(searchPattern)
         if (parts.size > 1) {
