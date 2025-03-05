@@ -26,10 +26,10 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
 
-            implementation(libs.room.runtime)
-            implementation(libs.androidx.room.runtime)
-            implementation(libs.sqlite.bundled)
-            implementation(libs.sqlite)
+            api(libs.room.runtime)
+            api(libs.androidx.room.runtime)
+            api(libs.sqlite.bundled)
+            api(libs.sqlite)
 
 
             implementation(libs.kotlinx.serialization.json)
@@ -51,19 +51,23 @@ kotlin {
             api("moe.tlaster:precompose-koin:1.5.10")
 
             implementation(compose.materialIconsExtended)
-            api(libs.mpfilepicker)
+            implementation(libs.mpfilepicker)
+
+            // Please do remember to add compose.foundation and compose.animation
+            api(compose.animation)
+            api(compose.foundation)
         }
 
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
             implementation(libs.androidx.sqlite.bundled.jvm)
+            implementation(libs.mpfilepicker)
         }
 
 
-        //android api(compose.foundation)
-        // Please do remember to add compose.foundation and compose.animation
-        //api(compose.animation)
+
+
     }
 
     // macosX64("native") { // on macOS

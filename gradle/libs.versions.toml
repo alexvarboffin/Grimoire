@@ -2,8 +2,11 @@
 
 #noinspection GradleDependency
 #androidx-lifecycle = "2.7.0"
+
+#room = "2.6.1"
 room = "2.7.0-alpha01"
-#roomCommon = "2.7.0-alpha01"
+
+roomCommon = "2.7.0-alpha01"
 
 agp = "8.6.1"
 ksp = "2.1.0-1.0.29"
@@ -68,7 +71,11 @@ androidx-espresso-core = "3.6.1"
 
 
 androidx-test-junit = "1.2.1"
-sqlite = "2.5.0-alpha13"
+#sqlite = "2.5.0-alpha13"
+sqlite = "2.5.0-alpha01"
+
+#sqliteBundledJvm = "2.5.0-beta01"
+sqliteBundledJvm = "2.5.0-alpha01"
 
 
 kotlinx-coroutines = "1.9.0"
@@ -94,7 +101,7 @@ lifecycleViewModelCompose = "2.8.0"
 
 
 
-sqliteBundledJvm = "2.5.0-beta01"
+
 
 [libraries]
 
@@ -195,7 +202,7 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 
-room = { id = "androidx.room", version.ref = "room" }
+room = { id = "androidx.room", version.ref = "roomCommon" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
 google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "googleFirebaseCrashlytics" }

@@ -15,26 +15,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import domain.model.Preset
-import moe.tlaster.precompose.koin.koinViewModel
-import moe.tlaster.precompose.viewmodel.viewModel
 import org.koin.compose.koinInject
-import org.koin.core.parameter.parametersOf
+import presentation.components.TopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PresetListScreen(
     onNavigateToEdit: (Long?) -> Unit,
-    //viewModel: PresetListViewModel = koinInject()
-    viewModel: PresetListViewModel = koinViewModel()
-
+    onNavigateBack: () -> Unit
 ) {
-
+    val viewModel: PresetListViewModel = koinInject()
     val presets by viewModel.presets.collectAsState()
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Пресеты замены текста") }
+            TopBar(
+                title = "Пресеты замены текста",
+                onBackClick = onNavigateBack
             )
         },
         floatingActionButton = {
@@ -46,7 +43,9 @@ fun PresetListScreen(
         }
     ) { padding ->
         LazyColumn(
-            modifier = Modifier.fillMaxSize().padding(padding),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
             contentPadding = PaddingValues(16.dp)
         ) {
             items(presets) { preset ->
@@ -72,7 +71,9 @@ private fun PresetItem(
     val isProcessing by viewModel.isProcessing.collectAsState()
 
     Card(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
         onClick = onPresetClick
     ) {
         Column(modifier = Modifier.padding(16.dp)) {

@@ -1,6 +1,27 @@
-# Лог ошибок
+# ByteBreakerz Error Log
 
-На данный момент ошибок не обнаружено.
+## Error Categories
+
+### File Operations
+- Problem: File access permissions not properly handled
+- Solution: Implement proper permission checks before file operations
+- Prevention: Always wrap file operations in try-catch blocks and verify permissions first
+
+### UI Related
+- Problem: Compose UI components may crash on certain platforms
+- Solution: Use platform-specific implementations where necessary
+- Prevention: Test UI components on all target platforms before deployment
+
+### Performance
+- Problem: Large file operations may cause UI freezes
+- Solution: Implement background processing for heavy operations
+- Prevention: Always use coroutines for IO operations and heavy processing
+
+## General Tips
+1. Always check platform compatibility when using KMP
+2. Implement proper error handling for all IO operations
+3. Use structured concurrency for background tasks
+4. Test on all target platforms regularly
 
 ## Советы по избеганию ошибок:
 1. Всегда использовать корутины для асинхронных операций

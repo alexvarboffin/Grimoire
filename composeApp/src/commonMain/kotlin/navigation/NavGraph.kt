@@ -6,12 +6,26 @@ import moe.tlaster.precompose.navigation.RouteBuilder
 import moe.tlaster.precompose.navigation.path
 import presentation.preset.edit.PresetEditScreen
 import presentation.preset.list.PresetListScreen
+import presentation.screens.certhash.CertHashScreen
+import presentation.screens.tools.ToolsScreen
 
-const val PRESET_LIST_ROUTE = "preset_list"
-const val PRESET_EDIT_ROUTE = "preset_edit/{id}"
+object NavGraph {
+    const val TOOLS_ROUTE = "tools"
+    const val PRESET_LIST_ROUTE = "preset_list"
+    const val PRESET_EDIT_ROUTE = "preset_edit/{id}"
+    const val CERT_HASH_ROUTE = "cert_hash"
+}
 
-fun RouteBuilder.presetGraph(navigator: Navigator) {
-    scene(PRESET_LIST_ROUTE) {
+fun RouteBuilder.mainGraph(navigator: Navigator) {
+    scene(NavGraph.TOOLS_ROUTE) {
+        ToolsScreen(
+            onNavigateToTool = { route -> 
+                navigator.navigate(route)
+            }
+        )
+    }
+    
+    scene(NavGraph.PRESET_LIST_ROUTE) {
         PresetListScreen(
             onNavigateToEdit = { presetId ->
                 val route = if (presetId != null) {
@@ -20,11 +34,12 @@ fun RouteBuilder.presetGraph(navigator: Navigator) {
                     "preset_edit/new"
                 }
                 navigator.navigate(route)
-            }
+            },
+            onNavigateBack = { navigator.goBack() }
         )
     }
     
-    scene(PRESET_EDIT_ROUTE) { backStackEntry ->
+    scene(NavGraph.PRESET_EDIT_ROUTE) { backStackEntry ->
         val presetId = backStackEntry.path<String>("id")?.let { id ->
             if (id == "new") null else id.toLongOrNull()
         }
@@ -33,13 +48,19 @@ fun RouteBuilder.presetGraph(navigator: Navigator) {
             onNavigateBack = { navigator.goBack() }
         )
     }
+
+    scene(NavGraph.CERT_HASH_ROUTE) {
+        CertHashScreen(
+            onNavigateBack = { navigator.goBack() }
+        )
+    }
 }
 
 fun Navigator.navigateToPresetEdit(presetId: Long? = null) {
     val route = if (presetId != null) {
-        PRESET_EDIT_ROUTE.replace("{id}", presetId.toString())
+        NavGraph.PRESET_EDIT_ROUTE.replace("{id}", presetId.toString())
     } else {
-        PRESET_EDIT_ROUTE.replace("?id={id}", "")
+        NavGraph.PRESET_EDIT_ROUTE.replace("{id}", "new")
     }
     navigate(route)
 }

@@ -1,48 +1,47 @@
-# Список изменений
+# ByteBreakerz Utility Suite Features
 
-## Архитектура:
-- Базовая структура KMP проекта
-- Clean Architecture компоненты:
-  - Domain: модели и интерфейсы репозиториев
-  - Data: Room база данных, реализации репозиториев
-  - Presentation: UI компоненты и ViewModels
-- Внедрение зависимостей через Koin 3:
-  - Интеграция с Compose
-  - Интеграция с PreCompose
-  - Поддержка ViewModels
-  - DSL для объявления зависимостей
-- Навигация через PreCompose:
-  - Типобезопасные маршруты
-  - Передача параметров через URL
-  - Поддержка Back Stack
+## Core Features
+- KMP project setup for desktop platform
+- File picker integration using mpfilepicker library
+- Certificate Hash Grabber tool implementation
 
-## Функциональность:
-- Система пресетов для замены текста
-- Поддержка RegExp
-- Работа с файловой системой через Okio:
-  - Рекурсивный поиск файлов
-  - Эффективное чтение/запись через буферы
-  - Кроссплатформенный доступ к файлам
-  - Валидация путей и директорий
-- Room база данных для хранения пресетов:
-  - Автоматическая миграция схемы
-  - Типобезопасные запросы через DAO
-  - Сериализация сложных объектов в JSON
-- Сериализация данных через kotlinx.serialization
+## UI Components
+- [x] Main application window
+- [x] File selection dialog
+- [x] Certificate Hash Grabber screen
+  - Hostname input field
+  - Output file selection
+  - Certificate display cards
+  - Loading indicators
+  - Error handling
 
-## Улучшение интерфейса:
-- Material 3 дизайн
-- Навигация между экранами:
-  - Список пресетов
-  - Создание/редактирование пресета
-  - Выбор папки
-  - Управление расширениями файлов
-- Диалоги для добавления расширений и замен
-- Поддержка темной/светлой темы
-- Плавные переходы между экранами
+## Utilities
+- [x] File Operations
+  - [x] File picker implementation
+  - [x] File save functionality
+- [x] Certificate Operations
+  - [x] SSL certificate extraction
+  - [x] Certificate hash calculation
+  - [x] Certificate info display
+  - [x] File output generation
 
-## Оптимизация:
-- Асинхронная обработка файлов через корутины
-- Кэширование пресетов в базе данных
-- Эффективная обработка больших файлов через потоки
-- Рекурсивный поиск файлов в директориях 
+## Performance Optimizations
+- [x] Background processing for network operations
+- [x] Coroutines integration
+- [x] UI state management
+- [x] Error handling and recovery
+
+## Security Features
+- [x] SSL/TLS certificate handling
+- [x] Secure hash generation
+- [x] File system security
+
+## Testing
+- [ ] Unit tests setup
+- [ ] Integration tests
+- [ ] UI tests
+
+## Documentation
+- [ ] API documentation
+- [ ] User guide
+- [ ] Development setup guide 
