@@ -56,6 +56,11 @@ kotlin {
             // Please do remember to add compose.foundation and compose.animation
             api(compose.animation)
             api(compose.foundation)
+
+
+            //DataStore
+            api(libs.datastore.preferences)
+            api(libs.datastore)
         }
 
         desktopMain.dependencies {
@@ -63,6 +68,11 @@ kotlin {
             implementation(libs.kotlinx.coroutines.swing)
             implementation(libs.androidx.sqlite.bundled.jvm)
             implementation(libs.mpfilepicker)
+
+
+            implementation("com.akuleshov7:ktoml-core:0.5.2")
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.0")
         }
 
 
@@ -72,11 +82,12 @@ kotlin {
 
     // macosX64("native") { // on macOS
     // linuxX64("native") // on Linux
-    mingwX64("native") { // on Windows
-        binaries {
-            executable()
-        }
-    }
+//    mingwX64("native") { // on Windows
+//        binaries {
+//            executable()
+//        }
+//    }
+
 }
 
 dependencies {

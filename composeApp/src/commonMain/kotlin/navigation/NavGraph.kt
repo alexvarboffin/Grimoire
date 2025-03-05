@@ -7,13 +7,17 @@ import moe.tlaster.precompose.navigation.path
 import presentation.preset.edit.PresetEditScreen
 import presentation.preset.list.PresetListScreen
 import presentation.screens.certhash.CertHashScreen
+import presentation.screens.settings.SettingsScreen
 import presentation.screens.tools.ToolsScreen
+import presentation.screens.tomlmerger.TomlMergerScreen
 
 object NavGraph {
     const val TOOLS_ROUTE = "tools"
     const val PRESET_LIST_ROUTE = "preset_list"
     const val PRESET_EDIT_ROUTE = "preset_edit/{id}"
     const val CERT_HASH_ROUTE = "cert_hash"
+    const val TOML_MERGER_ROUTE = "toml_merger"
+    const val SETTINGS_ROUTE = "settings"
 }
 
 fun RouteBuilder.mainGraph(navigator: Navigator) {
@@ -21,7 +25,16 @@ fun RouteBuilder.mainGraph(navigator: Navigator) {
         ToolsScreen(
             onNavigateToTool = { route -> 
                 navigator.navigate(route)
+            },
+            onNavigateToSettings = {
+                navigator.navigate(NavGraph.SETTINGS_ROUTE)
             }
+        )
+    }
+    
+    scene(NavGraph.SETTINGS_ROUTE) {
+        SettingsScreen(
+            onNavigateBack = { navigator.goBack() }
         )
     }
     
@@ -51,6 +64,12 @@ fun RouteBuilder.mainGraph(navigator: Navigator) {
 
     scene(NavGraph.CERT_HASH_ROUTE) {
         CertHashScreen(
+            onNavigateBack = { navigator.goBack() }
+        )
+    }
+
+    scene(NavGraph.TOML_MERGER_ROUTE) {
+        TomlMergerScreen(
             onNavigateBack = { navigator.goBack() }
         )
     }

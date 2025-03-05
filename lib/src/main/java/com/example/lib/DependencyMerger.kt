@@ -3,6 +3,17 @@ import com.akuleshov7.ktoml.Toml
 import com.akuleshov7.ktoml.TomlInputConfig
 import kotlinx.serialization.Serializable
 
+
+/*
+*
+* TOOLS DEPENDENCY MERGER
+* implementation("com.akuleshov7:ktoml-core:0.5.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.0")
+*
+* */
+
+
 @Serializable
 data class TomlConfig(
     val versions: Map<String, String> = emptyMap(),
