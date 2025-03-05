@@ -2,7 +2,9 @@
 
 #noinspection GradleDependency
 #androidx-lifecycle = "2.7.0"
-androidx-room = "2.7.0-alpha12"
+room = "2.7.0-alpha01"
+#roomCommon = "2.7.0-alpha01"
+
 agp = "8.6.1"
 ksp = "2.1.0-1.0.29"
 kotlin = "2.1.0"
@@ -48,7 +50,9 @@ runtimeLivedata = "1.7.6"
 
 unboundidLdapsdk = "6.0.6"
 jetbrainsKotlinJvm = "2.1.0"
+
 compose-multiplatform = "1.7.0"
+
 firebaseCrashlyticsKtx = "19.3.0"
 firebaseAnalyticsKtx = "22.1.2"
 googleGmsGoogleServices = "4.4.2"
@@ -75,7 +79,7 @@ precompose = "1.7.0-alpha01"
 activityCompose = "1.8.1"
 navigationCompose = "2.7.6"
 
-androidx-lifecycle = "2.8.7"
+androidx-lifecycle = "2.8.4"
 coreKtx = "1.12.0"
 androidx-core-ktx = "1.12.0"
 androidx-appcompat = "1.6.1"
@@ -89,7 +93,7 @@ lifecycleViewModelCompose = "2.8.0"
 
 
 
-roomCommon = "2.7.0-alpha01"
+
 sqliteBundledJvm = "2.5.0-beta01"
 
 [libraries]
@@ -127,8 +131,8 @@ androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecyc
 androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
-androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidx-room" }
-androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "androidx-room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 androidx-sqlite-bundled-jvm = { group = "androidx.sqlite", name = "sqlite-bundled-jvm", version.ref = "sqliteBundledJvm" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
@@ -175,9 +179,11 @@ precompose = { module = "moe.tlaster:precompose", version.ref = "precompose" }
 precompose-koin = { module = "moe.tlaster:precompose-koin", version.ref = "precompose" }
 precompose-viewmodel = { module = "moe.tlaster:precompose-viewmodel", version.ref = "precompose" }
 richeditor-compose = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditorCompose" }
-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomCommon" }
-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "roomCommon" }
-room-runtime-android = { group = "androidx.room", name = "room-runtime-android", version.ref = "roomCommon" }
+
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-runtime-android = { group = "androidx.room", name = "room-runtime-android", version.ref = "room" }
+
 sqlite = { module = "androidx.sqlite:sqlite", version.ref = "sqlite" }
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 unboundid-ldapsdk = { module = "com.unboundid:unboundid-ldapsdk", version.ref = "unboundidLdapsdk" }
@@ -189,7 +195,7 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 
-room = { id = "androidx.room", version.ref = "androidx-room" }
+room = { id = "androidx.room", version.ref = "room" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
 google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "googleFirebaseCrashlytics" }

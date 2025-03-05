@@ -43,9 +43,7 @@ kotlin {
 
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
-            // Please do remember to add compose.foundation and compose.animation
-            api(compose.foundation)
-            api(compose.animation)
+
 
             // PreCompose
             api("moe.tlaster:precompose:1.5.10")  // Используем стабильную версию
@@ -53,7 +51,7 @@ kotlin {
             api("moe.tlaster:precompose-koin:1.5.10")
 
             implementation(compose.materialIconsExtended)
-           
+            api(libs.mpfilepicker)
         }
 
         desktopMain.dependencies {
@@ -61,6 +59,11 @@ kotlin {
             implementation(libs.kotlinx.coroutines.swing)
             implementation(libs.androidx.sqlite.bundled.jvm)
         }
+
+
+        //android api(compose.foundation)
+        // Please do remember to add compose.foundation and compose.animation
+        //api(compose.animation)
     }
 
     // macosX64("native") { // on macOS
@@ -82,7 +85,23 @@ room {
     schemaDirectory("$projectDir/schemas")
 }
 
+
 compose.desktop {
+
+    val majorVersion = 1
+    val minorVersion = 3
+    val patchVersion = 35
+    //val versionSuffix = "beta.1"
+    val versionSuffix = ""//"" для стабильной версии
+
+    val _versionName = if (versionSuffix.isNotBlank()) {
+        "$majorVersion.$minorVersion.$patchVersion-$versionSuffix"
+    } else {
+        "$majorVersion.$minorVersion.$patchVersion"
+    }
+
+    val _versionCode = majorVersion * 10000 + minorVersion * 100 + patchVersion
+
     application {
         mainClass = "com.walhalla.grimoire.MainKt"
         //mainClass = "composeApp/src/desktopMain/kotlin/com/walhalla/grimoire/main.kt"
@@ -90,7 +109,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "com.walhalla.grimoire"
-            packageVersion = "1.0.0"
+            packageVersion = "$_versionName"
         }
     }
 }
