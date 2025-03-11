@@ -13,7 +13,9 @@ import data.local.PresetDao
 import data.repository.PresetRepositoryImpl
 import data.settings.SettingsDataStore
 import domain.certificate.CertificateRepository
+import domain.repository.AdbRepository
 import domain.repository.PresetRepository
+import io.ktor.client.HttpClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import moe.tlaster.precompose.viewmodel.viewModel
@@ -27,11 +29,15 @@ import presentation.preset.edit.PresetEditViewModel
 import presentation.preset.list.PresetListViewModel
 import presentation.screens.certhash.CertHashScreen
 import presentation.screens.certhash.CertHashViewModel
+import presentation.screens.packageManager.PackageManagerViewModel
 import presentation.screens.settings.SettingsViewModel
 import presentation.screens.tomlmerger.TomlMergerViewModel
+import presentation.screens.rest.RestClientViewModel
+import provideDataStore
 import theme.ThemeManager
 import util.FileProcessor
 import java.io.File
+
 
 val appModule = module {
     // Database
@@ -39,6 +45,7 @@ val appModule = module {
     single<AppDatabase> {
         getRoomDatabase(provideDatabase())
     }
+    single { provideHttpClient() }
 
     single<PresetDao> { get<AppDatabase>().presetDao() }
 
@@ -47,6 +54,10 @@ val appModule = module {
     single<PresetRepository> { PresetRepositoryImpl(get()) }
 
 
+    // DataStore
+    single<DataStore<Preferences>> {
+        provideDataStore()
+    }
 
     single { SettingsDataStore(get()) }
 
@@ -61,10 +72,16 @@ val appModule = module {
     single { PresetListViewModel(get(), get()) }
     factory { (presetId: Long?) -> PresetEditViewModel(get(), presetId, get()) }
 
+
+    single<AdbRepository> { provideAdbRepository() }
+
+
     single<CertificateRepository> { CertificateGrabber() }
     single { CertHashViewModel(get()) }
     single { TomlMergerViewModel(get()) }
     single { SettingsViewModel(get()) }
+    single { RestClientViewModel(get()) }
+    single { PackageManagerViewModel(get()) }
 }
 
 fun getRoomDatabase(builder: RoomDatabase.Builder<AppDatabase>): AppDatabase {
@@ -82,3 +99,7 @@ fun provideDatabase(): RoomDatabase.Builder<AppDatabase> {
         name = dbFile.absolutePath,
     )
 }
+
+expect fun provideHttpClient(): HttpClient
+
+expect fun provideAdbRepository(): AdbRepository

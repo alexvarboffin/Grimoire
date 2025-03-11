@@ -1,0 +1,22 @@
+Hostname: google.com
+Certificate 1:
+Subject: CN=*.google.com
+Issuer: CN=WE2, O=Google Trust Services, C=US
+Valid from: Wed Feb 26 18:33:03 MSK 2025
+Valid until: Wed May 21 18:33:02 MSK 2025
+Pin hash: sha256/0sL+Wu9e/Mzh+MIKWaG8GQJAqso8r5T21bWie09/6K8=
+
+Certificate 2:
+Subject: CN=WE2, O=Google Trust Services, C=US
+Issuer: CN=GTS Root R4, O=Google Trust Services LLC, C=US
+Valid from: Wed Dec 13 12:00:00 MSK 2023
+Valid until: Tue Feb 20 17:00:00 MSK 2029
+Pin hash: sha256/vh78KSg1Ry4NaqGDV10w/cTb9VH3BQUZoCWNa93W/EY=
+
+Certificate 3:
+Subject: CN=GTS Root R4, O=Google Trust Services LLC, C=US
+Issuer: CN=GlobalSign Root CA, OU=Root CA, O=GlobalSign nv-sa, C=BE
+Valid from: Wed Nov 15 06:43:21 MSK 2023
+Valid until: Fri Jan 28 03:00:42 MSK 2028
+Pin hash: sha256/mEflZT5enoR1FuXLgYYGqnVEoZvmf9c2bVBpiOjYQ0c=
+

@@ -4,6 +4,7 @@
 #androidx-lifecycle = "2.7.0"
 
 #room = "2.6.1"
+json = "20250107"
 room = "2.7.0-alpha01"
 
 roomCommon = "2.7.0-alpha01"
@@ -156,6 +157,7 @@ firebase-crashlytics-ktx = { group = "com.google.firebase", name = "firebase-cra
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompiler" }
 insert-koin-koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
+json = { module = "org.json:json", version.ref = "json" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }

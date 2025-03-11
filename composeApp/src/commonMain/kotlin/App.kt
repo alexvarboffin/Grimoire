@@ -12,6 +12,7 @@ import androidx.datastore.preferences.core.Preferences
 
 import di.appModule
 import di.provideDatabase
+import domain.repository.AdbRepository
 import kotlinx.coroutines.internal.synchronized
 import moe.tlaster.precompose.PreComposeApp
 import moe.tlaster.precompose.navigation.NavHost
@@ -36,12 +37,10 @@ fun App() {
         KoinApplication(
             application = {
                 val desktopModule = module {
-                    // DataStore
-                    single<DataStore<Preferences>> {
-                        provideDataStore()
-                    }
+
+
                 }
-                
+
                 modules(desktopModule + appModule)
             }
         ) {

@@ -10,6 +10,8 @@ import presentation.screens.certhash.CertHashScreen
 import presentation.screens.settings.SettingsScreen
 import presentation.screens.tools.ToolsScreen
 import presentation.screens.tomlmerger.TomlMergerScreen
+import presentation.screens.rest.RestClientScreen
+import presentation.screens.packageManager.PackageManagerScreen
 
 object NavGraph {
     const val TOOLS_ROUTE = "tools"
@@ -18,6 +20,8 @@ object NavGraph {
     const val CERT_HASH_ROUTE = "cert_hash"
     const val TOML_MERGER_ROUTE = "toml_merger"
     const val SETTINGS_ROUTE = "settings"
+    const val REST_CLIENT_ROUTE = "rest_client"
+    const val PACKAGE_MANAGER_ROUTE = "package_manager"
 }
 
 fun RouteBuilder.mainGraph(navigator: Navigator) {
@@ -70,6 +74,18 @@ fun RouteBuilder.mainGraph(navigator: Navigator) {
 
     scene(NavGraph.TOML_MERGER_ROUTE) {
         TomlMergerScreen(
+            onNavigateBack = { navigator.goBack() }
+        )
+    }
+
+    scene(NavGraph.REST_CLIENT_ROUTE) {
+        RestClientScreen(
+            onNavigateBack = { navigator.goBack() }
+        )
+    }
+
+    scene(NavGraph.PACKAGE_MANAGER_ROUTE) {
+        PackageManagerScreen(
             onNavigateBack = { navigator.goBack() }
         )
     }

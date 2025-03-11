@@ -61,6 +61,18 @@ kotlin {
             //DataStore
             api(libs.datastore.preferences)
             api(libs.datastore)
+
+
+            //Ktor
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.ktor.client.logging)
+
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
+            // https://mvnrepository.com/artifact/org.json/json
+            api(libs.json)
+
         }
 
         desktopMain.dependencies {
@@ -68,14 +80,12 @@ kotlin {
             implementation(libs.kotlinx.coroutines.swing)
             implementation(libs.androidx.sqlite.bundled.jvm)
             implementation(libs.mpfilepicker)
-
+            implementation(libs.ktor.client.okhttp)
 
             implementation("com.akuleshov7:ktoml-core:0.5.2")
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.0")
         }
-
-
 
 
     }
