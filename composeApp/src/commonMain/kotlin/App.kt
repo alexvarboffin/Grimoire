@@ -32,34 +32,21 @@ import theme.ThemeManager
 
 @Composable
 fun App() {
+    val themeManager: ThemeManager = koinInject()
+    val isDarkTheme by themeManager.isDarkTheme.collectAsState()
 
-    PreComposeApp {
-        KoinApplication(
-            application = {
-                val desktopModule = module {
-
-
-                }
-
-                modules(desktopModule + appModule)
-            }
+    MaterialTheme(
+        colorScheme = if (isDarkTheme) darkColorScheme() else lightColorScheme()
+    ) {
+        val navigator = rememberNavigator()
+        NavHost(
+            navigator = navigator,
+            initialRoute = TOOLS_ROUTE
         ) {
-            val themeManager: ThemeManager = koinInject()
-            val isDarkTheme by themeManager.isDarkTheme.collectAsState()
-
-            MaterialTheme(
-                colorScheme = if (isDarkTheme) darkColorScheme() else lightColorScheme()
-            ) {
-                val navigator = rememberNavigator()
-                NavHost(
-                    navigator = navigator,
-                    initialRoute = TOOLS_ROUTE
-                ) {
-                    mainGraph(navigator)
-                }
-            }
+            mainGraph(navigator)
         }
     }
+
 }
 
 

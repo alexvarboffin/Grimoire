@@ -1,4 +1,4 @@
-package com.example.lib
-fun main(){
-println("000")
-}
+//package com.example.lib
+//fun main(){
+//println("000")
+//}

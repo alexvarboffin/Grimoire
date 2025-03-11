@@ -1,4 +1,6 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import java.text.SimpleDateFormat
+import java.util.Date
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -113,28 +115,31 @@ room {
 
 compose.desktop {
 
-    val majorVersion = 1
-    val minorVersion = 3
-    val patchVersion = 35
-    //val versionSuffix = "beta.1"
-    val versionSuffix = ""//"" для стабильной версии
-
-    val _versionName = if (versionSuffix.isNotBlank()) {
-        "$majorVersion.$minorVersion.$patchVersion-$versionSuffix"
-    } else {
-        "$majorVersion.$minorVersion.$patchVersion"
-    }
-
-    val _versionCode = majorVersion * 10000 + minorVersion * 100 + patchVersion
+    // Версия для MSI должна быть в формате MAJOR.MINOR.BUILD (максимум 255.255.65535)
+    val buildNumber = SimpleDateFormat("HHmmss").format(Date()).toInt() % 65535 // Ограничиваем до 65535
+    val appVersion = "1.0.$buildNumber"
 
     application {
         mainClass = "com.walhalla.grimoire.MainKt"
         //mainClass = "composeApp/src/desktopMain/kotlin/com/walhalla/grimoire/main.kt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+
+            windows{
+                includeAllModules = true
+            }
+
+
+            //targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            //targetFormats(TargetFormat.Exe)
+            targetFormats(TargetFormat.Msi, TargetFormat.Deb)
+            modules("jdk.unsupported")
+            modules("jdk.unsupported.desktop")
+
+
+            //targetFormats(TargetFormat.Dmg, TargetFormat.Exe, TargetFormat.Deb)
             packageName = "com.walhalla.grimoire"
-            packageVersion = "$_versionName"
+            packageVersion = appVersion
         }
     }
 }
