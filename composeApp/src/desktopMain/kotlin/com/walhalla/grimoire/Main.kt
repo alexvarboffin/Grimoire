@@ -21,6 +21,22 @@ import java.awt.Label
 
 
 fun main() = application {
+
+    Thread.setDefaultUncaughtExceptionHandler { _, e ->
+        Dialog(Frame(), e.message ?: "Error").apply {
+            layout = FlowLayout()
+            val label = Label(e.message)
+            add(label)
+            val button = Button("OK").apply {
+                addActionListener { dispose() }
+            }
+            add(button)
+            setSize(300,300)
+            isVisible = true
+        }
+    }
+
+
     val windowState = rememberWindowState(
         width = 1024.dp,
         height = 768.dp
@@ -36,19 +52,7 @@ fun main() = application {
 //    }
 
 
-    Thread.setDefaultUncaughtExceptionHandler { _, e ->
-        Dialog(Frame(), e.message ?: "Error").apply {
-            layout = FlowLayout()
-            val label = Label(e.message)
-            add(label)
-            val button = Button("OK").apply {
-                addActionListener { dispose() }
-            }
-            add(button)
-            setSize(300,300)
-            isVisible = true
-        }
-    }
+
 
     application {
         //throw Exception("My custom error!")

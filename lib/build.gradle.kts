@@ -12,7 +12,7 @@ java {
 }
 dependencies{
     implementation("com.akuleshov7:ktoml-core:0.5.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.8.0")
 
 }

@@ -85,6 +85,6 @@ dependencyResolutionManagement {
 }
 
 include(":composeApp")
-include(":adbclient")
+//include(":adbclient")
 
 include(":lib")
