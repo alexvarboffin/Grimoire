@@ -6,14 +6,14 @@
 #room = "2.6.1"
 json = "20250107"
 kotlinxCoroutinesAndroid = "1.10.1"
+ktomlCore = "0.5.2"
 room = "2.7.0-alpha01"
-
 roomCommon = "2.7.0-alpha01"
 
-agp = "8.6.1"
+agp = "8.8.2"
 ksp = "2.1.0-1.0.29"
 kotlin = "2.1.0"
-accompanistPermissions = "0.24.13-rc"
+accompanistPermissions = "0.32.0"
 
 
 android-compileSdk = "34"
@@ -98,6 +98,9 @@ datastore = "1.1.1"
 moko = "0.18.0"
 lifecycleViewModel = "2.8.3"
 lifecycleViewModelCompose = "2.8.0"
+kotlinStdlib = "2.1.0"
+runner = "1.6.2"
+core = "1.6.1"
 
 
 
@@ -167,6 +170,7 @@ kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+ktoml-core = { module = "com.akuleshov7:ktoml-core", version.ref = "ktomlCore" }
 ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktorClientAndroid" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktorClientContentNegotiation" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktorClientCore" }
@@ -198,6 +202,9 @@ room-runtime-android = { group = "androidx.room", name = "room-runtime-android",
 sqlite = { module = "androidx.sqlite:sqlite", version.ref = "sqlite" }
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 unboundid-ldapsdk = { module = "com.unboundid:unboundid-ldapsdk", version.ref = "unboundidLdapsdk" }
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlinStdlib" }
+androidx-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
+androidx-core = { group = "androidx.test", name = "core", version.ref = "core" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -217,3 +224,4 @@ kspCompose = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
+android-kotlin-multiplatform-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }

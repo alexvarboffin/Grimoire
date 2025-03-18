@@ -84,7 +84,7 @@ kotlin {
             implementation(libs.mpfilepicker)
             implementation(libs.ktor.client.okhttp)
 
-            implementation("com.akuleshov7:ktoml-core:0.5.2")
+            implementation(libs.ktoml.core)
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.0")
         }

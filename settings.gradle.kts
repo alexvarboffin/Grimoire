@@ -85,6 +85,7 @@ dependencyResolutionManagement {
 }
 
 include(":composeApp")
-//include(":adbclient")
+include(":adbclient")
+//include(":shared") //kmp module
+//include(":lib")
 
-include(":lib")

@@ -1,6 +1,10 @@
 package di
 
 
+import Const.DATA_STORE_FILE_NAME
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
 import data.adb.AdbRepositoryImpl
 import domain.repository.AdbRepository
 import io.ktor.client.HttpClient
@@ -13,6 +17,8 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
+import okio.Path.Companion.toPath
+import java.nio.file.Paths
 
 actual fun provideHttpClient(): HttpClient {
 
@@ -92,3 +98,25 @@ actual fun provideHttpClient(): HttpClient {
 }
 
 actual fun provideAdbRepository(): AdbRepository  = AdbRepositoryImpl()
+
+
+object DataStoreProvider {
+    private var instance: DataStore<Preferences>? = null
+
+    fun getInstance(): DataStore<Preferences> {
+        return instance ?: synchronized(this) {
+            instance ?: createDataStore(producePath = {
+                val path = Paths.get(System.getProperty("user.home"), DATA_STORE_FILE_NAME)
+                path.toString()
+            }).also { instance = it }
+        }
+    }
+
+    private fun createDataStore(producePath: () -> String): DataStore<Preferences> {
+        return PreferenceDataStoreFactory.createWithPath(
+            produceFile = { producePath().toPath() }
+        )
+    }
+}
+
+actual fun provideDataStore(): DataStore<Preferences> = DataStoreProvider.getInstance()

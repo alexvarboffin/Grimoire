@@ -33,14 +33,14 @@ import presentation.screens.packageManager.PackageManagerViewModel
 import presentation.screens.settings.SettingsViewModel
 import presentation.screens.tomlmerger.TomlMergerViewModel
 import presentation.screens.rest.RestClientViewModel
-import provideDataStore
+
 import theme.ThemeManager
 import util.FileProcessor
 import java.io.File
 
 
 val appModule = module {
-    // Database
+// Database
 
     single<AppDatabase> {
         getRoomDatabase(provideDatabase())
@@ -84,7 +84,7 @@ val appModule = module {
     single { PackageManagerViewModel(get()) }
 }
 
-fun getRoomDatabase(builder: RoomDatabase.Builder<AppDatabase>): AppDatabase {
+private fun getRoomDatabase(builder: RoomDatabase.Builder<AppDatabase>): AppDatabase {
     return builder
         //.addMigrations(MIGRATIONS)
         //.fallbackToDestructiveMigrationOnDowngrade()
@@ -99,6 +99,7 @@ fun provideDatabase(): RoomDatabase.Builder<AppDatabase> {
         name = dbFile.absolutePath,
     )
 }
+expect fun provideDataStore() :DataStore<Preferences>
 
 expect fun provideHttpClient(): HttpClient
 
