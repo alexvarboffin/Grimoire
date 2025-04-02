@@ -10,7 +10,7 @@ ktomlCore = "0.5.2"
 room = "2.7.0-alpha01"
 roomCommon = "2.7.0-alpha01"
 
-agp = "8.8.2"
+agp = "8.7.3"
 ksp = "2.1.0-1.0.29"
 kotlin = "2.1.0"
 accompanistPermissions = "0.32.0"

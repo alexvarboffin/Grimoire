@@ -38,7 +38,13 @@ fun RestClientScreen(
     val viewModel: RestClientViewModel = koinInject()
     val clipboardManager = LocalClipboardManager.current
     
+
+
+
     var url by remember { mutableStateOf("") }
+
+
+
     var method by remember { mutableStateOf("GET") }
     var headers by remember { mutableStateOf("") }
     var body by remember { mutableStateOf("") }
