@@ -3,6 +3,8 @@ package data.certificate
 
 import domain.certificate.CertificateInfo
 import domain.certificate.CertificateRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.net.URL
 import java.security.MessageDigest
@@ -58,17 +60,22 @@ actual class CertificateGrabber : CertificateRepository {
         val sslContext = SSLContext.getInstance("TLS")
         sslContext.init(null, arrayOf<TrustManager>(trustManager), null)
 
-        val url = URL("https://$hostname")
-        val conn = url.openConnection() as HttpsURLConnection
-        conn.sslSocketFactory = sslContext.socketFactory
 
-        try {
-            conn.connect()
-        } catch (e: Exception) {
-            // Игнорируем - хэши уже получены
-        } finally {
-            conn.disconnect()
+        withContext(Dispatchers.IO) {
+            val url = URL("https://$hostname")
+            val conn = url.openConnection() as HttpsURLConnection
+            conn.sslSocketFactory = sslContext.socketFactory
+
+            try {
+                conn.connect()
+            } catch (e: Exception) {
+                // Игнорируем - хэши уже получены
+            } finally {
+                conn.disconnect()
+            }
         }
+
+
 
         return certificates
     }

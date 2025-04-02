@@ -87,7 +87,7 @@ val appModule = module {
 private fun getRoomDatabase(builder: RoomDatabase.Builder<AppDatabase>): AppDatabase {
     return builder
         //.addMigrations(MIGRATIONS)
-        //.fallbackToDestructiveMigrationOnDowngrade()
+        .fallbackToDestructiveMigrationOnDowngrade(true)
         .setDriver(BundledSQLiteDriver())
         .setQueryCoroutineContext(Dispatchers.IO)
         .build()

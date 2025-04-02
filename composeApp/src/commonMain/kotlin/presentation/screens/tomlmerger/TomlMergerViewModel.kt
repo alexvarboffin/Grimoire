@@ -121,7 +121,7 @@ class TomlMergerViewModel(
                         append("$libName = {")
                         val entries = libConfig.entries.toList().sortedBy { it.key }
                         entries.forEachIndexed { index, entry ->
-                            if (entry.value is Map<*, *>) {
+                            if (entry.value is LinkedHashMap) {
                                 var o = entry.key
                                 (entry.value as Map<*, *>).entries.sortedBy { it.key.toString() }
                                     .forEachIndexed { innerIndex, innerEntry ->
@@ -141,7 +141,7 @@ class TomlMergerViewModel(
                         append("$libName = {")
                         val entries = libConfig.entries.toList().sortedBy { it.key }
                         entries.forEachIndexed { index, entry ->
-                            if (entry.value is Map<*, *>) {
+                            if (entry.value is LinkedHashMap) {
                                 var o = entry.key
                                 (entry.value as Map<*, *>).entries.sortedBy { it.key.toString() }
                                     .forEachIndexed { innerIndex, innerEntry ->

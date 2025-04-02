@@ -7,9 +7,7 @@ import androidx.datastore.preferences.core.edit
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class SettingsDataStore(
-    private val dataStore: DataStore<Preferences>
-) {
+class SettingsDataStore(private val dataStore: DataStore<Preferences>) {
     val isDarkTheme: Flow<Boolean> = dataStore.data.map { preferences ->
         preferences[PreferencesKeys.IS_DARK_THEME] ?: false
     }

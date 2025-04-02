@@ -7,9 +7,7 @@ import domain.repository.PresetRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class PresetRepositoryImpl(
-    val presetDao: PresetDao
-) : PresetRepository {
+class PresetRepositoryImpl(val presetDao: PresetDao) : PresetRepository {
 
     override fun getAllPresets(): Flow<List<Preset>> {
         return presetDao.getAllPresets().map { entities ->

@@ -28,10 +28,10 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
 
-            api(libs.room.runtime)
-            api(libs.androidx.room.runtime)
-            api(libs.sqlite.bundled)
-            api(libs.sqlite)
+            implementation(libs.room.runtime)
+            implementation(libs.androidx.room.runtime)
+            implementation(libs.sqlite.bundled)
+            implementation(libs.sqlite)
 
 
             implementation(libs.kotlinx.serialization.json)
@@ -41,16 +41,16 @@ kotlin {
             implementation(libs.insert.koin.koin.compose)
 
             // Okio
-            implementation("com.squareup.okio:okio:3.9.0")
+            implementation(libs.okio)
 
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
 
 
             // PreCompose
-            api("moe.tlaster:precompose:1.5.10")  // Используем стабильную версию
-            api("moe.tlaster:precompose-viewmodel:1.5.10")
-            api("moe.tlaster:precompose-koin:1.5.10")
+            api(libs.precompose)  // Используем стабильную версию
+            api(libs.precompose.viewmodel)
+            api(libs.precompose.koin)
 
             implementation(compose.materialIconsExtended)
             implementation(libs.mpfilepicker)
@@ -71,9 +71,10 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.logging)
 
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
+            implementation(libs.kotlinx.serialization.core)
+            implementation(libs.kotlinx.serialization.json)
             // https://mvnrepository.com/artifact/org.json/json
-            api(libs.json)
+            implementation(libs.json)
 
         }
 
@@ -83,10 +84,8 @@ kotlin {
             implementation(libs.androidx.sqlite.bundled.jvm)
             implementation(libs.mpfilepicker)
             implementation(libs.ktor.client.okhttp)
-
             implementation(libs.ktoml.core)
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.0")
+            implementation(libs.logback)
         }
 
 

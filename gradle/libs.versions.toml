@@ -6,7 +6,9 @@
 #room = "2.6.1"
 json = "20250107"
 kotlinxCoroutinesAndroid = "1.10.1"
+kotlinxSerializationCore = "1.8.0"
 ktomlCore = "0.5.2"
+okio = "3.10.2"
 room = "2.7.0-alpha01"
 roomCommon = "2.7.0-alpha01"
 
@@ -20,7 +22,7 @@ compileSdk = "35"
 minSdk = "24"
 targetSdk = "35"
 
-coilCompose = "3.0.4"
+coilCompose = "3.1.0"
 hiltAndroid = "2.51.1"
 hiltCompiler = "2.51.1"
 hiltNavigationCompose = "1.2.0"
@@ -33,7 +35,7 @@ koin = "4.0.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-kotlinxSerializationJson = "1.7.3"
+kotlinxSerializationJson = "1.8.0"
 ktorClientAndroid = "3.0.3"
 ktorClientContentNegotiation = "3.0.1"
 ktorClientCore = "3.0.1"
@@ -45,29 +47,29 @@ leakcanaryAndroid = "2.12"
 
 
 composeBom = "2024.04.01"
-materialIconsExtended = "1.7.6"
+materialIconsExtended = "1.7.8"
 mpfilepicker = "3.1.0"
 
 playServicesLocation = "21.3.0"
 richeditorCompose = "1.0.0-rc10"
 
-runtimeLivedata = "1.7.6"
+runtimeLivedata = "1.7.8"
 
 unboundidLdapsdk = "6.0.6"
 jetbrainsKotlinJvm = "2.1.0"
 
 compose-multiplatform = "1.7.0"
 
-firebaseCrashlyticsKtx = "19.3.0"
-firebaseAnalyticsKtx = "22.1.2"
+firebaseCrashlyticsKtx = "19.4.2"
+firebaseAnalyticsKtx = "22.4.0"
 googleGmsGoogleServices = "4.4.2"
-googleFirebaseCrashlytics = "3.0.2"
+googleFirebaseCrashlytics = "3.0.3"
 appcompat = "1.7.0"
 material = "1.12.0"
 
 
 
-androidx-constraintlayout = "2.2.0"
+androidx-constraintlayout = "2.2.1"
 
 androidx-espresso-core = "3.6.1"
 
@@ -77,28 +79,28 @@ androidx-test-junit = "1.2.1"
 sqlite = "2.5.0-alpha01"
 
 #sqliteBundledJvm = "2.5.0-beta01"
-sqliteBundledJvm = "2.5.0-alpha01"
+sqliteBundledJvm = "2.5.0-rc03"
 
 
-kotlinx-coroutines = "1.9.0"
+kotlinx-coroutines = "1.10.1"
 ktor = "3.0.2"
 logback = "1.5.12"
 precompose = "1.7.0-alpha01"
 
-activityCompose = "1.8.1"
-navigationCompose = "2.7.6"
+activityCompose = "1.10.1"
+navigationCompose = "2.8.9"
 
-androidx-lifecycle = "2.8.4"
-coreKtx = "1.12.0"
+androidx-lifecycle = "2.8.7"
+coreKtx = "1.15.0"
 androidx-core-ktx = "1.12.0"
 androidx-appcompat = "1.6.1"
 androidx-material = "1.11.0"
-datastore = "1.1.1"
+datastore = "1.1.4"
 
 moko = "0.18.0"
-lifecycleViewModel = "2.8.3"
-lifecycleViewModelCompose = "2.8.0"
-kotlinStdlib = "2.1.0"
+lifecycleViewModel = "2.8.7"
+lifecycleViewModelCompose = "2.8.7"
+kotlinStdlib = "2.1.20"
 runner = "1.6.2"
 core = "1.6.1"
 
@@ -169,6 +171,7 @@ kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotl
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
 kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
+kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerializationCore" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 ktoml-core = { module = "com.akuleshov7:ktoml-core", version.ref = "ktomlCore" }
 ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktorClientAndroid" }
@@ -189,6 +192,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 moko-permissions = { module = "dev.icerock.moko:permissions", version.ref = "moko" }
 moko-permissions-compose = { module = "dev.icerock.moko:permissions-compose", version.ref = "moko" }
 mpfilepicker = { module = "com.darkrockstudios:mpfilepicker", version.ref = "mpfilepicker" }
+okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 precompose = { module = "moe.tlaster:precompose", version.ref = "precompose" }
 precompose-koin = { module = "moe.tlaster:precompose-koin", version.ref = "precompose" }
