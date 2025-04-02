@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.walhalla.adbclient"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.walhalla.adbclient"
