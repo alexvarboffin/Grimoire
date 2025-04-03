@@ -30,8 +30,8 @@ kotlin {
 
             implementation(libs.room.runtime)
             implementation(libs.androidx.room.runtime)
-            implementation(libs.sqlite.bundled)
-            implementation(libs.sqlite)
+//            implementation(libs.sqlite.bundled)
+//            implementation(libs.sqlite)
 
 
             implementation(libs.kotlinx.serialization.json)
@@ -81,11 +81,16 @@ kotlin {
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
-            implementation(libs.androidx.sqlite.bundled.jvm)
+            //implementation(libs.androidx.sqlite.bundled.jvm)
             implementation(libs.mpfilepicker)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.ktoml.core)
             implementation(libs.logback)
+
+            implementation(libs.room.runtime)
+            implementation(libs.androidx.room.runtime)
+            implementation(libs.sqlite.bundled)
+//            implementation(libs.sqlite)
         }
 
 

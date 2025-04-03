@@ -24,9 +24,9 @@ fun main() {
 
         AppLogger.error("Error occurred", e)
 
-        Dialog(Frame(), e.message ?: "Error").apply {
+        Dialog(Frame(), (e.javaClass.name + " | " + e.toString()) ?: "Error").apply {
             layout = FlowLayout()
-            val label = TextArea(e.message)
+            val label = TextArea(e.javaClass.name + " | " + e.toString())
             add(label)
             val button = Button("OK").apply {
                 addActionListener { dispose() }
