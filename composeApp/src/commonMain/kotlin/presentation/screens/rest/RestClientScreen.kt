@@ -14,9 +14,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
+import com.example.util.JsonToKotlinGenerator
 import org.koin.compose.koinInject
 import presentation.components.TopBar
-import util.JsonToKotlinGenerator
+
 
 enum class ResponseTab {
     BODY, HEADERS, COOKIES

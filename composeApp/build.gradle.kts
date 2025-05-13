@@ -59,23 +59,15 @@ kotlin {
             api(compose.animation)
             api(compose.foundation)
 
-
             //DataStore
             api(libs.datastore.preferences)
             api(libs.datastore)
-
-
-            //Ktor
-            implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.content.negotiation)
-            implementation(libs.ktor.serialization.kotlinx.json)
-            implementation(libs.ktor.client.logging)
 
             implementation(libs.kotlinx.serialization.core)
             implementation(libs.kotlinx.serialization.json)
             // https://mvnrepository.com/artifact/org.json/json
             implementation(libs.json)
-
+            implementation(project(":core:network"))
         }
 
         desktopMain.dependencies {
@@ -91,6 +83,8 @@ kotlin {
             implementation(libs.androidx.room.runtime)
             implementation(libs.sqlite.bundled)
 //            implementation(libs.sqlite)
+
+            implementation(project(":lib"))
         }
 
 
@@ -108,6 +102,7 @@ kotlin {
 
 dependencies {
     add("kspDesktop", libs.room.compiler)
+
 }
 //kapt {
 //    correctErrorTypes = true

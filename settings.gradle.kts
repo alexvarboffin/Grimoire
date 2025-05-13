@@ -1,12 +1,15 @@
 rootProject.name = "Grimoire"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+rootProject.buildFileName = "build.gradle.kts"
 
-buildCache {
-    local {
-        isEnabled = true
-        directory = File("C:/gradle-cache")
-    }
-}
+//buildCache {
+//    local {
+//        isEnabled = true
+//        //directory = File("Z:/gradle/build-cache")
+//        directory = File(rootDir, "build-cache")
+//
+//    }
+//}
 
 //pluginManagement {
 //    repositories {
@@ -43,10 +46,20 @@ pluginManagement {
 
 
     repositories {
-        gradlePluginPortal()
-        google()
         mavenLocal()
-        mavenCentral()
+        mavenCentral()  // Primary repository for dependencies
+        google()        // Required for Android-specific dependencies
+        gradlePluginPortal()  // Access to Gradle plugins
+
+//        google {
+//            mavenContent {
+//                includeGroupAndSubgroups("androidx")
+//                includeGroupAndSubgroups("com.android")
+//                includeGroupAndSubgroups("com.google")
+//            }
+//        }
+        maven("https://maven.google.com")
+        maven("https://dl.bintray.com/videolan/Android")
 
 //        google {
 //            content {
@@ -67,6 +80,8 @@ pluginManagement {
 
     }
 }
+
+
 dependencyResolutionManagement {
 //    //repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
 //    repositories {
@@ -75,9 +90,9 @@ dependencyResolutionManagement {
 //    }
     //repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-
-        google()
         mavenLocal()
+        google()
+
         mavenCentral()
         maven("https://jitpack.io")
 
@@ -85,7 +100,9 @@ dependencyResolutionManagement {
 }
 
 include(":composeApp")
-include(":adbclient")
+//include(":adbclient")
 //include(":shared") //kmp module
 include(":lib")
+include(":core:network")
+
 
