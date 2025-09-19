@@ -2,22 +2,25 @@ package presentation.screens.keystore
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import domain.model.KeystoreData
-import moe.tlaster.precompose.ui.LocalClipboardManager
+
 import presentation.components.TopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun KeystoreGeneratorScreen(onNavigateBack: () -> Unit) {
     val clipboardManager = LocalClipboardManager.current
-    var generatedCommand by remember { mutableStateOf("") }
+    var generatedCommand: String by remember { mutableStateOf("") }
 
     fun generateCommand() {
         val country = KeystoreData.countries.entries.random()
@@ -39,11 +42,7 @@ fun KeystoreGeneratorScreen(onNavigateBack: () -> Unit) {
         topBar = {
             TopBar(
                 title = "Keystore Generator",
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-                    }
-                }
+
             )
         }
     ) {
@@ -81,7 +80,7 @@ fun KeystoreGeneratorScreen(onNavigateBack: () -> Unit) {
                     Text("Сгенерировать новую")
                 }
                 Button(
-                    onClick = { clipboardManager?.setText(generatedCommand) },
+                    onClick = { clipboardManager?.setText(AnnotatedString(generatedCommand)) },
                     modifier = Modifier.weight(1f)
                 ) {
                     Text("Копировать")
