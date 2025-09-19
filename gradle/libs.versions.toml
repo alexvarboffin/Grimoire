@@ -60,7 +60,7 @@ runtimeLivedata = "1.7.8"
 unboundidLdapsdk = "6.0.6"
 jetbrainsKotlinJvm = "2.1.0"
 
-compose-multiplatform = "1.7.0"
+compose-multiplatform = "1.8.2"
 
 firebaseCrashlyticsKtx = "19.4.2"
 firebaseAnalyticsKtx = "22.4.0"
