@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import navigation.NavGraph.CERT_HASH_ROUTE
+import navigation.NavGraph.KEYSTORE_GENERATOR_ROUTE
 import navigation.NavGraph.PRESET_LIST_ROUTE
 import navigation.NavGraph.TOML_MERGER_ROUTE
 import navigation.NavGraph.REST_CLIENT_ROUTE
@@ -56,6 +57,12 @@ private val tools = listOf(
         description = "Управление приложениями через ADB",
         route = PACKAGE_MANAGER_ROUTE,
         icon = Icons.Default.Refresh
+    ),
+    Tool(
+        name = "Keystore Generator",
+        description = "Генерация команды для создания keystore",
+        route = KEYSTORE_GENERATOR_ROUTE,
+        icon = Icons.Default.VpnKey
     )
 )
 

@@ -20,16 +20,14 @@ import presentation.components.TopBar
 @Composable
 fun KeystoreGeneratorScreen(onNavigateBack: () -> Unit) {
     val clipboardManager = LocalClipboardManager.current
-    var generatedCommand: String by remember { mutableStateOf("") }
+    var generatedCommand by remember { mutableStateOf("") }
 
     fun generateCommand() {
-        val country = KeystoreData.countries.entries.random()
+        val location = KeystoreData.locations.random()
         val organization = KeystoreData.organizations.random()
         val name = KeystoreData.names.random()
-        val city = KeystoreData.cities.random()
-        val state = KeystoreData.states.random()
 
-        val dname = "CN=$name, OU=$organization, O=$organization, L=$city, ST=$state, C=${country.key}"
+        val dname = "CN=$name, OU=$organization, O=$organization, L=${location.city}, ST=${location.state}, C=${location.countryCode}"
         
         generatedCommand = "keytool -genkey -v -keystore keystore.jks -alias release -keyalg RSA -keysize 2048 -validity 10000 -dname \"$dname\" -storepass release -keypass release"
     }
@@ -45,11 +43,11 @@ fun KeystoreGeneratorScreen(onNavigateBack: () -> Unit) {
 
             )
         }
-    ) {
+    ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it)
+                .padding(padding)
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)

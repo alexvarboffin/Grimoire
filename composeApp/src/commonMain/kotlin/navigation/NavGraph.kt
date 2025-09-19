@@ -7,6 +7,7 @@ import moe.tlaster.precompose.navigation.path
 import presentation.preset.edit.PresetEditScreen
 import presentation.preset.list.PresetListScreen
 import presentation.screens.certhash.CertHashScreen
+import presentation.screens.keystore.KeystoreGeneratorScreen
 import presentation.screens.settings.SettingsScreen
 import presentation.screens.tools.ToolsScreen
 import presentation.screens.tomlmerger.TomlMergerScreen
@@ -22,6 +23,7 @@ object NavGraph {
     const val SETTINGS_ROUTE = "settings"
     const val REST_CLIENT_ROUTE = "rest_client"
     const val PACKAGE_MANAGER_ROUTE = "package_manager"
+    const val KEYSTORE_GENERATOR_ROUTE = "keystore_generator"
 }
 
 fun RouteBuilder.mainGraph(navigator: Navigator) {
@@ -68,6 +70,11 @@ fun RouteBuilder.mainGraph(navigator: Navigator) {
 
     scene(NavGraph.CERT_HASH_ROUTE) {
         CertHashScreen(
+            onNavigateBack = { navigator.goBack() }
+        )
+    }
+  scene(NavGraph.KEYSTORE_GENERATOR_ROUTE) {
+        KeystoreGeneratorScreen(
             onNavigateBack = { navigator.goBack() }
         )
     }
