@@ -30,7 +30,7 @@ fun main() {
                     if (file.length() > 0) {
                         // Копируем только если размер больше 0
                         Files.copy(file.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING)
-                        println("Скопировано: ${file.name}")
+                        //println("Скопировано: ${file.name}")
                     } else {
                         // Если размер 0 — удаляем целевой файл, если он есть
                         if (target.exists()) {

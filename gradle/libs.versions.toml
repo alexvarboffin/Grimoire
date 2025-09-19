@@ -9,8 +9,10 @@ kotlinxCoroutinesAndroid = "1.10.1"
 kotlinxSerializationCore = "1.8.0"
 ktomlCore = "0.5.2"
 okio = "3.10.2"
-room = "2.7.0-alpha01"
-roomCommon = "2.7.0-alpha01"
+
+#room = "2.7.0-alpha01"
+#roomDb = "2.7.0-alpha01"
+room = "2.7.1"
 
 agp = "8.8.1"
 ksp = "2.1.0-1.0.29"
@@ -113,23 +115,6 @@ core = "1.6.1"
 [libraries]
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ktor-server-tests = { module = "io.ktor:ktor-server-tests-jvm", version.ref = "ktor" }
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
@@ -185,8 +170,8 @@ ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "kto
 ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanaryAndroid" }
-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "lifecycleViewModel"}
-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewModelCompose"}
+lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "lifecycleViewModel" }
+lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewModelCompose" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 moko-permissions = { module = "dev.icerock.moko:permissions", version.ref = "moko" }
@@ -217,7 +202,7 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 
-room = { id = "androidx.room", version.ref = "roomCommon" }
+room = { id = "androidx.room", version.ref = "room" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
 google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "googleFirebaseCrashlytics" }

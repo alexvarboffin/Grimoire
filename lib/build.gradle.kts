@@ -5,7 +5,9 @@ plugins {
     //kotlin("jvm") version "1.9.0"
     kotlin("plugin.serialization") version "1.9.0"
 }
-
+kotlin {
+    jvmToolchain(21)
+}
 java {
     sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = JavaVersion.VERSION_21
