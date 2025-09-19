@@ -15,6 +15,7 @@ import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import com.example.util.JsonToKotlinGenerator
+import io.ktor.client.HttpClient
 import org.koin.compose.koinInject
 import presentation.components.TopBar
 
@@ -37,13 +38,12 @@ fun RestClientScreen(
     onNavigateBack: () -> Unit
 ) {
     val viewModel: RestClientViewModel = koinInject()
-    val clipboardManager = LocalClipboardManager.current
-    
+    val x: JsonToKotlinGenerator = koinInject()
 
+    val clipboardManager = LocalClipboardManager.current
 
 
     var url by remember { mutableStateOf("") }
-
 
 
     var method by remember { mutableStateOf("GET") }
@@ -54,7 +54,7 @@ fun RestClientScreen(
     var showCodeGenMenu by remember { mutableStateOf(false) }
     var showSnackbar by remember { mutableStateOf(false) }
     var snackbarMessage by remember { mutableStateOf("") }
-    
+
     val state by viewModel.state.collectAsState()
     val methods = listOf("GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS")
 
@@ -63,15 +63,35 @@ fun RestClientScreen(
         val className = "Response"
         val baseUrl = url.substringBefore("/", "")
         val path = url.substringAfter(baseUrl, "")
-        
+
         val code = when (type) {
-            CodeGenType.DATA_CLASS -> JsonToKotlinGenerator.generateDataClass(response, className)
-            CodeGenType.RETROFIT_INTERFACE -> JsonToKotlinGenerator.generateRetrofitInterface(baseUrl, path, method, className)
-            CodeGenType.KTOR_CLIENT -> JsonToKotlinGenerator.generateKtorClient(baseUrl, path, method, className)
-            CodeGenType.KTOR_CLIENT_RESULT -> JsonToKotlinGenerator.generateKtorClientResult(baseUrl, path, method, className)
-            CodeGenType.REPOSITORY -> JsonToKotlinGenerator.generateRepository(className)
+
+
+            CodeGenType.DATA_CLASS -> x.generateDataClass(response, className)
+            CodeGenType.RETROFIT_INTERFACE -> x.generateRetrofitInterface(
+                baseUrl,
+                path,
+                method,
+                className
+            )
+
+            CodeGenType.KTOR_CLIENT -> x.generateKtorClient(
+                baseUrl,
+                path,
+                method,
+                className
+            )
+
+            CodeGenType.KTOR_CLIENT_RESULT -> x.generateKtorClientResult(
+                baseUrl,
+                path,
+                method,
+                className
+            )
+
+            CodeGenType.REPOSITORY -> x.generateRepository(className)
         }
-        
+
         clipboardManager.setText(AnnotatedString(code))
         showSnackbar = true
         snackbarMessage = "Код скопирован в буфер обмена"
@@ -140,9 +160,9 @@ fun RestClientScreen(
                         modifier = Modifier.weight(1f),
                         placeholder = { Text("https://api.example.com/endpoint") }
                     )
-                    
+
                     Button(
-                        onClick = { 
+                        onClick = {
                             viewModel.sendRequest(url, method, headers, body)
                         },
                         enabled = !state.isLoading,
@@ -162,7 +182,7 @@ fun RestClientScreen(
                         }
                     }
                 }
-                
+
                 // Method Selector
                 ExposedDropdownMenuBox(
                     expanded = isMethodDropdownExpanded,
@@ -178,7 +198,7 @@ fun RestClientScreen(
                             .fillMaxWidth()
                             .menuAnchor()
                     )
-                    
+
                     ExposedDropdownMenu(
                         expanded = isMethodDropdownExpanded,
                         onDismissRequest = { isMethodDropdownExpanded = false }
@@ -194,7 +214,7 @@ fun RestClientScreen(
                         }
                     }
                 }
-                
+
                 // Headers Input
                 OutlinedTextField(
                     value = headers,
@@ -205,7 +225,7 @@ fun RestClientScreen(
                         .height(120.dp),
                     placeholder = { Text("Content-Type: application/json\nAuthorization: Bearer token") }
                 )
-                
+
                 // Body Input
                 OutlinedTextField(
                     value = body,
@@ -281,7 +301,7 @@ fun RestClientScreen(
                                             readOnly = true,
                                             modifier = Modifier.fillMaxSize()
                                         )
-                                        
+
                                         // Кнопка генерации кода
                                         Box(
                                             modifier = Modifier
@@ -289,9 +309,12 @@ fun RestClientScreen(
                                                 .padding(8.dp)
                                         ) {
                                             IconButton(onClick = { showCodeGenMenu = true }) {
-                                                Icon(Icons.Default.Code, contentDescription = "Генерировать код")
+                                                Icon(
+                                                    Icons.Default.Code,
+                                                    contentDescription = "Генерировать код"
+                                                )
                                             }
-                                            
+
                                             DropdownMenu(
                                                 expanded = showCodeGenMenu,
                                                 onDismissRequest = { showCodeGenMenu = false }
@@ -303,7 +326,10 @@ fun RestClientScreen(
                                                         showCodeGenMenu = false
                                                     },
                                                     leadingIcon = {
-                                                        Icon(Icons.Default.DataObject, contentDescription = null)
+                                                        Icon(
+                                                            Icons.Default.DataObject,
+                                                            contentDescription = null
+                                                        )
                                                     }
                                                 )
                                                 DropdownMenuItem(
@@ -313,7 +339,10 @@ fun RestClientScreen(
                                                         showCodeGenMenu = false
                                                     },
                                                     leadingIcon = {
-                                                        Icon(Icons.Default.Api, contentDescription = null)
+                                                        Icon(
+                                                            Icons.Default.Api,
+                                                            contentDescription = null
+                                                        )
                                                     }
                                                 )
                                                 DropdownMenuItem(
@@ -323,7 +352,10 @@ fun RestClientScreen(
                                                         showCodeGenMenu = false
                                                     },
                                                     leadingIcon = {
-                                                        Icon(Icons.Default.Http, contentDescription = null)
+                                                        Icon(
+                                                            Icons.Default.Http,
+                                                            contentDescription = null
+                                                        )
                                                     }
                                                 )
                                                 DropdownMenuItem(
@@ -333,7 +365,10 @@ fun RestClientScreen(
                                                         showCodeGenMenu = false
                                                     },
                                                     leadingIcon = {
-                                                        Icon(Icons.Default.Http, contentDescription = null)
+                                                        Icon(
+                                                            Icons.Default.Http,
+                                                            contentDescription = null
+                                                        )
                                                     }
                                                 )
                                                 DropdownMenuItem(
@@ -343,13 +378,17 @@ fun RestClientScreen(
                                                         showCodeGenMenu = false
                                                     },
                                                     leadingIcon = {
-                                                        Icon(Icons.Default.Storage, contentDescription = null)
+                                                        Icon(
+                                                            Icons.Default.Storage,
+                                                            contentDescription = null
+                                                        )
                                                     }
                                                 )
                                             }
                                         }
                                     }
                                 }
+
                                 ResponseTab.HEADERS -> {
                                     LazyColumn(
                                         modifier = Modifier.fillMaxSize(),
@@ -372,6 +411,7 @@ fun RestClientScreen(
                                         }
                                     }
                                 }
+
                                 ResponseTab.COOKIES -> {
                                     LazyColumn(
                                         modifier = Modifier.fillMaxSize(),

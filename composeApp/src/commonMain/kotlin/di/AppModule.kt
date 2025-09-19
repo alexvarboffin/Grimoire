@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import com.example.util.JsonToKotlinGenerator
 import data.certificate.CertificateGrabber
 import data.local.AppDatabase
 import data.local.PresetDao
@@ -46,6 +47,7 @@ val appModule = module {
         getRoomDatabase(provideDatabase())
     }
     single { provideHttpClient() }
+    single { JsonToKotlinGenerator(get()) }
 
     single<PresetDao> { get<AppDatabase>().presetDao() }
 
