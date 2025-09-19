@@ -1,0 +1,11 @@
+Набор утилит...
+проект называется ByteBreakerz Utility Suite.
+
+  Это кроссплатформенное приложение (созданное с помощью Kotlin Multiplatform), которое
+  представляет собой набор утилит для разработчиков, в основном ориентированных на Android.
+
+создай утилиту которая будет создавать случайную страну, код страны, остальные параметры
+
+keytool -genkey -v -keystore keystore.jks -alias release -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=BPIX Football, OU=BPIX Football, O=BPIX Football, L=BPIX Football, ST=BPIX Football, C=US" -storepass release -keypass release
+
+НЕ МЕНЯТЬ ТОЛЬЕО КЛЮЧ ХРАНИЛИЩА АЛИАС И КЛЮЧ АЛИАСА
