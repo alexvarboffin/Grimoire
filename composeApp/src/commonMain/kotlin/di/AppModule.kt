@@ -37,6 +37,7 @@ import presentation.screens.rest.RestClientViewModel
 import presentation.screens.templates.TemplatesViewModel
 import presentation.screens.templates.TemplateEditViewModel
 import presentation.screens.batch.BatchGeneratorViewModel
+import presentation.screens.list.ListGeneratorViewModel
 
 import theme.ThemeManager
 import util.FileProcessor
@@ -90,6 +91,7 @@ val appModule = module {
     single { TemplatesViewModel(get()) }
     factory { (filePath: String) -> TemplateEditViewModel(filePath, get()) }
     single { BatchGeneratorViewModel(get()) }
+    single { ListGeneratorViewModel(get()) }
 }
 
 private fun getRoomDatabase(builder: RoomDatabase.Builder<AppDatabase>): AppDatabase {

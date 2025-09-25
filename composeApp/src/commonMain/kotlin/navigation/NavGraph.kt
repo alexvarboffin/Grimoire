@@ -16,6 +16,7 @@ import presentation.screens.packageManager.PackageManagerScreen
 import presentation.screens.templates.TemplatesScreen
 import presentation.screens.templates.TemplateEditScreen
 import presentation.screens.batch.BatchGeneratorScreen
+import presentation.screens.list.ListGeneratorScreen
 import java.net.URLDecoder
 import java.net.URLEncoder
 
@@ -32,6 +33,7 @@ object NavGraph {
     const val TEMPLATES_ROUTE = "templates"
     const val TEMPLATE_EDIT_ROUTE = "template_edit/{filePath}"
     const val BATCH_GENERATOR_ROUTE = "batch_generator"
+    const val LIST_GENERATOR_ROUTE = "list_generator"
 }
 
 fun RouteBuilder.mainGraph(navigator: Navigator) {
@@ -126,6 +128,12 @@ fun RouteBuilder.mainGraph(navigator: Navigator) {
 
     scene(NavGraph.BATCH_GENERATOR_ROUTE) {
         BatchGeneratorScreen(
+            onNavigateBack = { navigator.goBack() }
+        )
+    }
+
+    scene(NavGraph.LIST_GENERATOR_ROUTE) {
+        ListGeneratorScreen(
             onNavigateBack = { navigator.goBack() }
         )
     }

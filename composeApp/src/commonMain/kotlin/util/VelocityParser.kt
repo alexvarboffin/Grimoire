@@ -23,4 +23,10 @@ object VelocityParser {
     fun extractFilename(templateContent: String): String? {
         return filenameRegex.find(templateContent)?.groupValues?.get(1)
     }
+
+    private val listVarRegex = """##\s*@list\(([^)]+)\)""".toRegex()
+
+    fun extractListVariableNames(templateContent: String): List<String> {
+        return listVarRegex.findAll(templateContent).map { it.groupValues[1].trim() }.toList()
+    }
 }

@@ -1,0 +1,10 @@
+## @filename("MyItems.txt")
+## @default(packageName="com.example")
+## @list(itemsList)
+
+Here are the items you entered:
+#foreach( $item in $itemsList )
+- $item
+#end
+
+This was generated for package: $packageName

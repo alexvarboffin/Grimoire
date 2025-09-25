@@ -4,7 +4,7 @@ import org.apache.velocity.VelocityContext
 import org.apache.velocity.app.VelocityEngine
 import java.io.StringWriter
 
-actual fun renderTemplate(templateContent: String, variables: Map<String, String>): String {
+actual fun renderTemplate(templateContent: String, variables: Map<String, Any>): String {
     val ve = VelocityEngine()
     ve.init()
 

@@ -1,3 +1,3 @@
 package domain.templates
 
-expect fun renderTemplate(templateContent: String, variables: Map<String, String>): String
+expect fun renderTemplate(templateContent: String, variables: Map<String, Any>): String

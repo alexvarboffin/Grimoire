@@ -20,6 +20,7 @@ import navigation.NavGraph.REST_CLIENT_ROUTE
 import navigation.NavGraph.PACKAGE_MANAGER_ROUTE
 import navigation.NavGraph.TEMPLATES_ROUTE
 import navigation.NavGraph.BATCH_GENERATOR_ROUTE
+import navigation.NavGraph.LIST_GENERATOR_ROUTE
 import presentation.components.TopBar
 
 data class Tool(
@@ -77,6 +78,12 @@ private val tools = listOf(
         description = "Генерация нескольких файлов из одного шаблона",
         route = BATCH_GENERATOR_ROUTE,
         icon = Icons.Default.DynamicFeed
+    ),
+    Tool(
+        name = "List Generator",
+        description = "Генерация одного файла из списка элементов",
+        route = LIST_GENERATOR_ROUTE,
+        icon = Icons.Default.FormatListBulleted
     )
 )
 
