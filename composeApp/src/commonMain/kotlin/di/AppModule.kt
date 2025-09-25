@@ -34,6 +34,7 @@ import presentation.screens.packageManager.PackageManagerViewModel
 import presentation.screens.settings.SettingsViewModel
 import presentation.screens.tomlmerger.TomlMergerViewModel
 import presentation.screens.rest.RestClientViewModel
+import presentation.screens.templates.TemplatesViewModel
 
 import theme.ThemeManager
 import util.FileProcessor
@@ -84,6 +85,7 @@ val appModule = module {
     single { SettingsViewModel(get()) }
     single { RestClientViewModel(get()) }
     single { PackageManagerViewModel(get()) }
+    single { TemplatesViewModel(get()) }
 }
 
 private fun getRoomDatabase(builder: RoomDatabase.Builder<AppDatabase>): AppDatabase {

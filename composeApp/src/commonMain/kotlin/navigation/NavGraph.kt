@@ -13,6 +13,7 @@ import presentation.screens.tools.ToolsScreen
 import presentation.screens.tomlmerger.TomlMergerScreen
 import presentation.screens.rest.RestClientScreen
 import presentation.screens.packageManager.PackageManagerScreen
+import presentation.screens.templates.TemplatesScreen
 
 object NavGraph {
     const val TOOLS_ROUTE = "tools"
@@ -24,6 +25,7 @@ object NavGraph {
     const val REST_CLIENT_ROUTE = "rest_client"
     const val PACKAGE_MANAGER_ROUTE = "package_manager"
     const val KEYSTORE_GENERATOR_ROUTE = "keystore_generator"
+    const val TEMPLATES_ROUTE = "templates"
 }
 
 fun RouteBuilder.mainGraph(navigator: Navigator) {
@@ -93,6 +95,12 @@ fun RouteBuilder.mainGraph(navigator: Navigator) {
 
     scene(NavGraph.PACKAGE_MANAGER_ROUTE) {
         PackageManagerScreen(
+            onNavigateBack = { navigator.goBack() }
+        )
+    }
+
+    scene(NavGraph.TEMPLATES_ROUTE) {
+        TemplatesScreen(
             onNavigateBack = { navigator.goBack() }
         )
     }

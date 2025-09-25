@@ -8,6 +8,7 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import com.walhalla.grimoire.utils.AppLogger
 import di.appModule
+import di.desktopModule
 import moe.tlaster.precompose.PreComposeApp
 import org.koin.compose.KoinApplication
 import org.koin.dsl.module
@@ -54,7 +55,6 @@ fun main() {
             PreComposeApp {
                 KoinApplication(
                     application = {
-                        val desktopModule = module {}
                         modules(desktopModule + appModule)
                     }
                 ) {

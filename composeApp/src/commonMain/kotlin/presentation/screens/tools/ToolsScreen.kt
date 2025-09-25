@@ -18,6 +18,7 @@ import navigation.NavGraph.PRESET_LIST_ROUTE
 import navigation.NavGraph.TOML_MERGER_ROUTE
 import navigation.NavGraph.REST_CLIENT_ROUTE
 import navigation.NavGraph.PACKAGE_MANAGER_ROUTE
+import navigation.NavGraph.TEMPLATES_ROUTE
 import presentation.components.TopBar
 
 data class Tool(
@@ -63,6 +64,12 @@ private val tools = listOf(
         description = "Генерация команды для создания keystore",
         route = KEYSTORE_GENERATOR_ROUTE,
         icon = Icons.Default.VpnKey
+    ),
+    Tool(
+        name = "Templates",
+        description = "Навигация по шаблонам",
+        route = TEMPLATES_ROUTE,
+        icon = Icons.Default.Folder
     )
 )
 
