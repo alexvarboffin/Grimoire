@@ -78,6 +78,7 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
             implementation(libs.ktoml.core)
             implementation(libs.logback)
+            implementation(libs.velocity)
 
             implementation(libs.room.runtime)
             implementation(libs.androidx.room.runtime)
