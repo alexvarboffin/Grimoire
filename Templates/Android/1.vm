@@ -1,0 +1,4 @@
+Hello, $name!
+
+This is a test template.
+Your favorite color is ${color}.

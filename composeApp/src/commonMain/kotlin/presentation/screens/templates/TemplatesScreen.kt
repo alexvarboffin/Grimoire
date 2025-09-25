@@ -20,11 +20,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import moe.tlaster.precompose.koin.koinViewModel
+import moe.tlaster.precompose.navigation.Navigator
+import navigation.NavGraph
 import presentation.components.TopBar
+import java.net.URLEncoder
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TemplatesScreen(onNavigateBack: () -> Unit) {
+fun TemplatesScreen(navigator: Navigator, onNavigateBack: () -> Unit) {
     val viewModel = koinViewModel(TemplatesViewModel::class)
     val files by viewModel.files
     val currentPath by viewModel.currentPath
@@ -53,6 +56,9 @@ fun TemplatesScreen(onNavigateBack: () -> Unit) {
                         .clickable {
                             if (file.isDirectory) {
                                 viewModel.loadFiles(file.path)
+                            } else {
+                                val encodedPath = URLEncoder.encode(file.path, "UTF-8")
+                                navigator.navigate(NavGraph.TEMPLATE_EDIT_ROUTE.replace("{filePath}", encodedPath))
                             }
                         }
                         .padding(16.dp)

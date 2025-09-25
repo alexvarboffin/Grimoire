@@ -14,6 +14,9 @@ import presentation.screens.tomlmerger.TomlMergerScreen
 import presentation.screens.rest.RestClientScreen
 import presentation.screens.packageManager.PackageManagerScreen
 import presentation.screens.templates.TemplatesScreen
+import presentation.screens.templates.TemplateEditScreen
+import java.net.URLDecoder
+import java.net.URLEncoder
 
 object NavGraph {
     const val TOOLS_ROUTE = "tools"
@@ -26,6 +29,7 @@ object NavGraph {
     const val PACKAGE_MANAGER_ROUTE = "package_manager"
     const val KEYSTORE_GENERATOR_ROUTE = "keystore_generator"
     const val TEMPLATES_ROUTE = "templates"
+    const val TEMPLATE_EDIT_ROUTE = "template_edit/{filePath}"
 }
 
 fun RouteBuilder.mainGraph(navigator: Navigator) {
@@ -101,8 +105,21 @@ fun RouteBuilder.mainGraph(navigator: Navigator) {
 
     scene(NavGraph.TEMPLATES_ROUTE) {
         TemplatesScreen(
+            navigator = navigator,
             onNavigateBack = { navigator.goBack() }
         )
+    }
+
+    scene(NavGraph.TEMPLATE_EDIT_ROUTE) { backStackEntry ->
+        val filePath = backStackEntry.path<String>("filePath")?.let {
+            URLDecoder.decode(it, "UTF-8")
+        }
+        filePath?.let {
+            TemplateEditScreen(
+                filePath = it,
+                onNavigateBack = { navigator.goBack() }
+            )
+        }
     }
 }
 
