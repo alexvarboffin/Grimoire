@@ -48,11 +48,19 @@ fun TemplateEditScreen(filePath: String, onNavigateBack: () -> Unit) {
             
             Spacer(modifier = Modifier.height(16.dp))
 
-            Button(
-                onClick = { viewModel.render() },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Применить")
+            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                Button(
+                    onClick = { viewModel.render() },
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text("Применить")
+                }
+                Button(
+                    onClick = { viewModel.save() },
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text("Сохранить")
+                }
             }
 
             Spacer(modifier = Modifier.height(16.dp))

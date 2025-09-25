@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.InsertDriveFile
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -19,7 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import moe.tlaster.precompose.koin.koinViewModel
+import org.koin.compose.koinInject
 import moe.tlaster.precompose.navigation.Navigator
 import navigation.NavGraph
 import presentation.components.TopBar
@@ -28,7 +28,7 @@ import java.net.URLEncoder
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TemplatesScreen(navigator: Navigator, onNavigateBack: () -> Unit) {
-    val viewModel = koinViewModel(TemplatesViewModel::class)
+    val viewModel: TemplatesViewModel = koinInject()
     val files by viewModel.files
     val currentPath by viewModel.currentPath
 
@@ -38,9 +38,9 @@ fun TemplatesScreen(navigator: Navigator, onNavigateBack: () -> Unit) {
                 title = currentPath,
                 onBackClick = onNavigateBack,
                 actions = {
-                    if (viewModel.currentPath.value != "C:\\src\\Synced\\Grimoire\\Templates") {
+                    if (viewModel.currentPath.value.equals(viewModel.rootPath, ignoreCase = true).not()) {
                         IconButton(onClick = { viewModel.navigateUp() }) {
-                            Icon(Icons.Default.ArrowBack, contentDescription = "Up")
+                            Icon(Icons.Default.ArrowUpward, contentDescription = "Up")
                         }
                     }
                 }

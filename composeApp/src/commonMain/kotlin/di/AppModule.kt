@@ -83,11 +83,11 @@ val appModule = module {
     single<CertificateRepository> { CertificateGrabber() }
     single { CertHashViewModel(get()) }
     single { TomlMergerViewModel(get()) }
-    single { SettingsViewModel(get()) }
+    single { SettingsViewModel(get(), get()) }
     single { RestClientViewModel(get()) }
     single { PackageManagerViewModel(get()) }
     single { TemplatesViewModel(get()) }
-    factory { (filePath: String) -> TemplateEditViewModel(filePath) }
+    factory { (filePath: String) -> TemplateEditViewModel(filePath, get()) }
 }
 
 private fun getRoomDatabase(builder: RoomDatabase.Builder<AppDatabase>): AppDatabase {

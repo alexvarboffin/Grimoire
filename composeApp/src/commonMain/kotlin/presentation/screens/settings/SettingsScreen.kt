@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.darkrockstudios.libraries.mpfilepicker.DirectoryPicker
 import org.koin.compose.koinInject
 import presentation.components.TopBar
 
@@ -18,6 +19,7 @@ fun SettingsScreen(
 ) {
     val viewModel: SettingsViewModel = koinInject()
     val uiState by viewModel.uiState.collectAsState()
+    var showDirPicker by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -72,6 +74,35 @@ fun SettingsScreen(
                 }
             }
 
+            // Шаблоны
+            OutlinedCard(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = "Шаблоны",
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    
+                    TextField(
+                        value = uiState.savePath,
+                        onValueChange = { viewModel.setSavePath(it) },
+                        modifier = Modifier.fillMaxWidth(),
+                        label = { Text("Путь для сохранения") },
+                        trailingIcon = {
+                            IconButton(onClick = { showDirPicker = true }) {
+                                Icon(Icons.Default.FolderOpen, contentDescription = "Выбрать папку")
+                            }
+                        }
+                    )
+                }
+            }
+
             // Информация о приложении
             OutlinedCard(
                 modifier = Modifier.fillMaxWidth()
@@ -117,4 +148,11 @@ fun SettingsScreen(
             }
         }
     }
-} 
+
+    DirectoryPicker(showDirPicker) {
+        showDirPicker = false
+        if (it != null) {
+            viewModel.setSavePath(it)
+        }
+    }
+}

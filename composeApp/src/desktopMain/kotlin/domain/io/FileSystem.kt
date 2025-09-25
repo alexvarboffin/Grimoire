@@ -17,3 +17,13 @@ actual class FileSystem {
         } ?: emptyList()
     }
 }
+
+actual fun saveFile(path: String, content: String) {
+    val file = java.io.File(path)
+    file.parentFile?.mkdirs()
+    file.writeText(content)
+}
+
+actual fun getParentPath(path: String): String? {
+    return java.io.File(path).parent
+}
