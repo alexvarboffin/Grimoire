@@ -13,3 +13,7 @@ data class FileEntry(
 expect fun saveFile(path: String, content: String)
 
 expect fun getParentPath(path: String): String?
+
+expect fun listFilesRecursively(path: String): List<FileEntry>
+
+expect fun readFileContent(path: String): String

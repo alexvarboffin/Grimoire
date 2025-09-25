@@ -36,6 +36,7 @@ import presentation.screens.tomlmerger.TomlMergerViewModel
 import presentation.screens.rest.RestClientViewModel
 import presentation.screens.templates.TemplatesViewModel
 import presentation.screens.templates.TemplateEditViewModel
+import presentation.screens.batch.BatchGeneratorViewModel
 
 import theme.ThemeManager
 import util.FileProcessor
@@ -88,6 +89,7 @@ val appModule = module {
     single { PackageManagerViewModel(get()) }
     single { TemplatesViewModel(get()) }
     factory { (filePath: String) -> TemplateEditViewModel(filePath, get()) }
+    single { BatchGeneratorViewModel(get()) }
 }
 
 private fun getRoomDatabase(builder: RoomDatabase.Builder<AppDatabase>): AppDatabase {

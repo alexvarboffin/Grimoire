@@ -19,6 +19,7 @@ import navigation.NavGraph.TOML_MERGER_ROUTE
 import navigation.NavGraph.REST_CLIENT_ROUTE
 import navigation.NavGraph.PACKAGE_MANAGER_ROUTE
 import navigation.NavGraph.TEMPLATES_ROUTE
+import navigation.NavGraph.BATCH_GENERATOR_ROUTE
 import presentation.components.TopBar
 
 data class Tool(
@@ -70,6 +71,12 @@ private val tools = listOf(
         description = "Навигация по шаблонам",
         route = TEMPLATES_ROUTE,
         icon = Icons.Default.Folder
+    ),
+    Tool(
+        name = "Batch Generator",
+        description = "Генерация нескольких файлов из одного шаблона",
+        route = BATCH_GENERATOR_ROUTE,
+        icon = Icons.Default.DynamicFeed
     )
 )
 

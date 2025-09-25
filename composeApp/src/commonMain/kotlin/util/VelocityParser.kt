@@ -17,4 +17,10 @@ object VelocityParser {
             key.trim() to value
         }
     }
+
+    private val filenameRegex = """##\s*@filename\("([^"]+)"\)""".toRegex()
+
+    fun extractFilename(templateContent: String): String? {
+        return filenameRegex.find(templateContent)?.groupValues?.get(1)
+    }
 }

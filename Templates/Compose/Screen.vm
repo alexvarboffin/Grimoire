@@ -1,0 +1,14 @@
+##
+## @default(packageName="com.walhalla.grimoire.presentation.screens")
+##
+#set( $className = "${itemName}Screen" )
+
+package ${packageName}
+
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+
+@Composable
+fun ${className}() {
+    Text("This is the ${className}.")
+}

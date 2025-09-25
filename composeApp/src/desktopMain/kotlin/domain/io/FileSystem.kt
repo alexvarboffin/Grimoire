@@ -27,3 +27,19 @@ actual fun saveFile(path: String, content: String) {
 actual fun getParentPath(path: String): String? {
     return java.io.File(path).parent
 }
+
+actual fun readFileContent(path: String): String {
+    return java.io.File(path).readText()
+}
+
+actual fun listFilesRecursively(path: String): List<FileEntry> {
+    val root = java.io.File(path)
+    if (!root.isDirectory) return emptyList()
+    return root.walkTopDown().map { file ->
+        FileEntry(
+            name = file.name,
+            isDirectory = file.isDirectory,
+            path = file.absolutePath
+        )
+    }.toList()
+}
