@@ -8,4 +8,13 @@ object VelocityParser {
             .map { it.groupValues[1] }
             .toSet()
     }
+
+    private val defaultValRegex = """##\s*@default\(([^=]+)="([^"]+)"\)""".toRegex()
+
+    fun extractDefaults(templateContent: String): Map<String, String> {
+        return defaultValRegex.findAll(templateContent).associate {
+            val (key, value) = it.destructured
+            key.trim() to value
+        }
+    }
 }

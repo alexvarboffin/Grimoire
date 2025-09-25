@@ -1,0 +1,13 @@
+##
+## @default(packageName="com.walhalla.grimoire")
+## @default(className="MyGeneratedClass")
+##
+
+package ${packageName}
+
+class ${className}(private val name: String) {
+
+    fun sayHello() {
+        println("Hello, my name is $name. I am an instance of ${className}.")
+    }
+}
