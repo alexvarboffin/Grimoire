@@ -105,6 +105,7 @@ lifecycleViewModelCompose = "2.8.7"
 kotlinStdlib = "2.1.20"
 runner = "1.6.2"
 core = "1.6.1"
+velocity = "1.7"
 
 
 
@@ -194,6 +195,7 @@ unboundid-ldapsdk = { module = "com.unboundid:unboundid-ldapsdk", version.ref = 
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlinStdlib" }
 androidx-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
 androidx-core = { group = "androidx.test", name = "core", version.ref = "core" }
+velocity = { module = "org.apache.velocity:velocity", version.ref = "velocity" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

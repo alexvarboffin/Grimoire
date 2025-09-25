@@ -16,7 +16,7 @@ java {
 dependencies{
     implementation(libs.ktoml.core)
     implementation(libs.kotlinx.serialization.json)
-
+    implementation(libs.velocity)
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.okhttp)
 }
