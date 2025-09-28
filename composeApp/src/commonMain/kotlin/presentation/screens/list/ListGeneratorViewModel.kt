@@ -127,7 +127,7 @@ class ListGeneratorViewModel(
         viewModelScope.launch {
             try {
                 val template = uiState.value.selectedTemplate ?: throw IllegalStateException("Шаблон не выбран.")
-                if (uiState.value.listVariables.any { (variableValues[it] as? SnapshotStateList<String>)?.isEmpty() == true }) {
+                if (uiState.value.listVariables.any { (variableValues[it] as? SnapshotStateList<*>)?.isEmpty() == true }) {
                     throw IllegalStateException("Один из списков элементов пуст.")
                 }
 
