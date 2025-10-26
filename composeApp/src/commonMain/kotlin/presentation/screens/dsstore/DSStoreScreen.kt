@@ -76,7 +76,7 @@ fun DSStoreScreen(onNavigateBack: () -> Unit) {
                             Text("Filename: ${record.name}", style = MaterialTheme.typography.titleMedium)
                             Spacer(modifier = Modifier.height(8.dp))
                             record.fields.forEach { (key, value) ->
-                                Text("$key: ${value.toString()}")
+                                Text("$key: ${record.humanReadable(key, value)}")
                             }
                         }
                     }

@@ -24,8 +24,18 @@ class DSStoreViewModel(private val parser: DSStoreParser, private val httpClient
             try {
                 val bytes = httpClient.get(url).readBytes()
                 val records = parser.parse(bytes)
+                println("--- PARSED RECORDS ---")
+                records.forEach { record ->
+                    println("Filename: ${record.name}")
+                    record.fields.forEach { (key, value) ->
+                        println("  $key: ${record.humanReadable(key, value)}")
+                    }
+                }
+                println("--------------------")
                 _uiState.value = DSStoreUiState(records = records)
             } catch (e: Exception) {
+                println("Error parsing from URL: ${e.message}")
+                e.printStackTrace()
                 _uiState.value = DSStoreUiState(error = e.message)
             }
         }

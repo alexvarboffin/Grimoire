@@ -15,14 +15,14 @@ class DSStoreParser {
         buffer = ByteBuffer.wrap(data).order(ByteOrder.BIG_ENDIAN)
         records.clear()
 
-        parseHeader()
-        parseAllocator()
+        val allocatorOffset = parseHeader()
+        parseAllocator(allocatorOffset)
         parseTree(nodeId = rootNodeId)
 
         return records
     }
 
-    private fun parseHeader() {
+    private fun parseHeader(): Int {
         val alignment = buffer.int
         if (alignment != 0x00000001) {
             // warnings.warn(f'Alignment int {hex(alignment)} not 0x00000001')
@@ -42,9 +42,10 @@ class DSStoreParser {
         }
 
         buffer.position(allocatorOffset)
+        return allocatorOffset
     }
 
-    private fun parseAllocator() {
+    private fun parseAllocator(allocatorOffset: Int) {
         val numOffsets = buffer.int
         val second = buffer.int
         if (second != 0) {
@@ -53,7 +54,7 @@ class DSStoreParser {
         }
         offsets = List(numOffsets) { buffer.int }
 
-        buffer.position(buffer.position() + 1024 - (numOffsets * 4) - 8) // Skip to ToC
+        buffer.position(allocatorOffset + 0x408)
 
         val numKeys = buffer.int
         val directory = mutableMapOf<String, Int>()
@@ -67,8 +68,10 @@ class DSStoreParser {
     }
 
     private fun parseTree(nodeId: Int, master: Boolean = true) {
+        println("Parsing tree node: $nodeId, master: $master, position: ${buffer.position()}")
         val offsetAndSize = offsets[nodeId]
         buffer.position(0x4 + (offsetAndSize ushr 5 shl 5))
+        println("  Moved to position: ${buffer.position()}")
 
         if (master) {
             val rootId = buffer.int
@@ -76,6 +79,7 @@ class DSStoreParser {
             val numRecords = buffer.int
             val numNodes = buffer.int
             val fifth = buffer.int
+            println("  Master node: rootId=$rootId, treeHeight=$treeHeight, numRecords=$numRecords, numNodes=$numNodes")
             if (fifth != 0x00001000) {
                 // warnings.warn(f'Fifth int of master {hex(fifth)}'
                 // ' not 0x00001000')
@@ -84,9 +88,12 @@ class DSStoreParser {
         } else {
             val nextId = buffer.int
             val numRecords = buffer.int
+            println("  Node: nextId=$nextId, numRecords=$numRecords")
             for (i in 0 until numRecords) {
+                println("    Record $i")
                 if (nextId != 0) {
                     val childId = buffer.int
+                    println("      Internal node, childId: $childId")
                     val currentPosition = buffer.position()
                     parseTree(childId, false)
                     buffer.position(currentPosition)
@@ -96,6 +103,7 @@ class DSStoreParser {
                 val name = readUtf16BeString(nameLength)
                 val field = readString(4)
                 val data = parseData()
+                println("      Record data: name=$name, field=$field")
 
                 val existingRecord = records.find { it.name == name }
                 if (existingRecord != null) {
@@ -106,6 +114,7 @@ class DSStoreParser {
             }
 
             if (nextId != 0) {
+                println("  Following nextId: $nextId")
                 parseTree(nextId, false)
             }
         }
@@ -150,5 +159,21 @@ class DSStoreParser {
 data class Record(val name: String, val fields: MutableMap<String, Any>) {
     fun update(newFields: Map<String, Any>) {
         fields.putAll(newFields)
+    }
+
+    fun humanReadable(field: String, data: Any): String {
+        return when (field) {
+            "Iloc" -> {
+                if (data is ByteArray && data.size == 16) {
+                    val buffer = ByteBuffer.wrap(data).order(ByteOrder.BIG_ENDIAN)
+                    val x = buffer.int
+                    val y = buffer.int
+                    "Icon location: x ${x}px, y ${y}px"
+                } else {
+                    data.toString()
+                }
+            }
+            else -> data.toString()
+        }
     }
 }
