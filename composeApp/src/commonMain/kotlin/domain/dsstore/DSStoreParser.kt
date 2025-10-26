@@ -53,6 +53,7 @@ class DSStoreParser {
             // ' not 0x00000000')
         }
         offsets = List(numOffsets) { buffer.int }
+        println("Offsets: ${offsets.joinToString { "0x" + it.toString(16) }}")
 
         buffer.position(allocatorOffset + 0x408)
 
@@ -63,6 +64,7 @@ class DSStoreParser {
             val key = readString(keyLength)
             directory[key] = buffer.int
         }
+        println("Directory: $directory")
 
         rootNodeId = directory["DSDB"] ?: throw IllegalStateException("DSDB key not found in directory")
     }
@@ -70,7 +72,9 @@ class DSStoreParser {
     private fun parseTree(nodeId: Int, master: Boolean = true) {
         println("Parsing tree node: $nodeId, master: $master, position: ${buffer.position()}")
         val offsetAndSize = offsets[nodeId]
-        buffer.position(0x4 + (offsetAndSize ushr 5 shl 5))
+        val offset = 0x4 + (offsetAndSize ushr 5 shl 5)
+        println("  offsetAndSize for nodeId $nodeId: 0x${offsetAndSize.toString(16)}, calculated offset: 0x${offset.toString(16)}")
+        buffer.position(offset)
         println("  Moved to position: ${buffer.position()}")
 
         if (master) {
@@ -88,12 +92,12 @@ class DSStoreParser {
         } else {
             val nextId = buffer.int
             val numRecords = buffer.int
-            println("  Node: nextId=$nextId, numRecords=$numRecords")
+            println("  Node: nextId=0x${nextId.toString(16)}, numRecords=$numRecords")
             for (i in 0 until numRecords) {
                 println("    Record $i")
                 if (nextId != 0) {
                     val childId = buffer.int
-                    println("      Internal node, childId: $childId")
+                    println("      Internal node, childId: 0x${childId.toString(16)}")
                     val currentPosition = buffer.position()
                     parseTree(childId, false)
                     buffer.position(currentPosition)
@@ -114,7 +118,7 @@ class DSStoreParser {
             }
 
             if (nextId != 0) {
-                println("  Following nextId: $nextId")
+                println("  Following nextId: 0x${nextId.toString(16)}")
                 parseTree(nextId, false)
             }
         }

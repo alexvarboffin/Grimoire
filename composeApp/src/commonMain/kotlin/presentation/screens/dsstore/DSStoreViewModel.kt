@@ -22,6 +22,7 @@ class DSStoreViewModel(private val parser: DSStoreParser, private val httpClient
         viewModelScope.launch {
             _uiState.value = DSStoreUiState(isLoading = true)
             try {
+                val baseUrl = url.substringBeforeLast("/") + "/"
                 val bytes = httpClient.get(url).readBytes()
                 val records = parser.parse(bytes)
                 println("--- PARSED RECORDS ---")
@@ -32,7 +33,7 @@ class DSStoreViewModel(private val parser: DSStoreParser, private val httpClient
                     }
                 }
                 println("--------------------")
-                _uiState.value = DSStoreUiState(records = records)
+                _uiState.value = DSStoreUiState(records = records, baseUrl = baseUrl)
             } catch (e: Exception) {
                 println("Error parsing from URL: ${e.message}")
                 e.printStackTrace()
@@ -59,5 +60,6 @@ class DSStoreViewModel(private val parser: DSStoreParser, private val httpClient
 data class DSStoreUiState(
     val records: List<Record> = emptyList(),
     val isLoading: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
+    val baseUrl: String? = null
 )
