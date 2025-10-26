@@ -38,6 +38,8 @@ import presentation.screens.templates.TemplatesViewModel
 import presentation.screens.templates.TemplateEditViewModel
 import presentation.screens.batch.BatchGeneratorViewModel
 import presentation.screens.list.ListGeneratorViewModel
+import presentation.screens.dsstore.DSStoreViewModel
+import domain.dsstore.DSStoreParser
 
 import theme.ThemeManager
 import util.FileProcessor
@@ -92,6 +94,8 @@ val appModule = module {
     factory { (filePath: String) -> TemplateEditViewModel(filePath, get()) }
     single { BatchGeneratorViewModel(get()) }
     single { ListGeneratorViewModel(get()) }
+    single { DSStoreParser() }
+    single { DSStoreViewModel(get(), get()) }
 }
 
 private fun getRoomDatabase(builder: RoomDatabase.Builder<AppDatabase>): AppDatabase {

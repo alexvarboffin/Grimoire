@@ -17,6 +17,7 @@ import presentation.screens.templates.TemplatesScreen
 import presentation.screens.templates.TemplateEditScreen
 import presentation.screens.batch.BatchGeneratorScreen
 import presentation.screens.list.ListGeneratorScreen
+import presentation.screens.dsstore.DSStoreScreen
 import java.net.URLDecoder
 import java.net.URLEncoder
 
@@ -34,6 +35,7 @@ object NavGraph {
     const val TEMPLATE_EDIT_ROUTE = "template_edit/{filePath}"
     const val BATCH_GENERATOR_ROUTE = "batch_generator"
     const val LIST_GENERATOR_ROUTE = "list_generator"
+    const val DS_STORE_PARSER_ROUTE = "ds_store_parser"
 }
 
 fun RouteBuilder.mainGraph(navigator: Navigator) {
@@ -134,6 +136,12 @@ fun RouteBuilder.mainGraph(navigator: Navigator) {
 
     scene(NavGraph.LIST_GENERATOR_ROUTE) {
         ListGeneratorScreen(
+            onNavigateBack = { navigator.goBack() }
+        )
+    }
+
+    scene(NavGraph.DS_STORE_PARSER_ROUTE) {
+        DSStoreScreen(
             onNavigateBack = { navigator.goBack() }
         )
     }

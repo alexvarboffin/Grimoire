@@ -20,7 +20,7 @@ kotlin = "2.1.0"
 accompanistPermissions = "0.32.0"
 
 
-compileSdk = "35"
+compileSdk = "36"
 minSdk = "24"
 targetSdk = "35"
 
@@ -31,41 +31,33 @@ hiltNavigationCompose = "1.2.0"
 
 koin = "4.0.1"
 
-
-
-
 junit = "4.13.2"
-junitVersion = "1.2.1"
-espressoCore = "3.6.1"
-kotlinxSerializationJson = "1.8.0"
-ktorClientAndroid = "3.0.3"
-ktorClientContentNegotiation = "3.0.1"
-ktorClientCore = "3.0.1"
-ktorClientLogging = "3.0.1"
-ktorClientOkhttp = "3.0.1"
-ktorSerializationGson = "3.0.1"
-ktorSerializationKotlinxJson = "3.0.2"
+junitVersion = "1.3.0"
+espressoCore = "3.7.0"
+kotlinxSerializationJson = "1.9.0"
+ktor = "3.3.1"
+
 leakcanaryAndroid = "2.12"
 
 
-composeBom = "2024.04.01"
+composeBom = "2025.10.01"
 materialIconsExtended = "1.7.8"
 mpfilepicker = "3.1.0"
 
 playServicesLocation = "21.3.0"
 richeditorCompose = "1.0.0-rc10"
 
-runtimeLivedata = "1.7.8"
+runtimeLivedata = "1.9.4"
 
-unboundidLdapsdk = "6.0.6"
+unboundidLdapsdk = "7.0.3"
 jetbrainsKotlinJvm = "2.1.0"
 
-compose-multiplatform = "1.8.2"
+compose-multiplatform = "1.9.1"
 
-firebaseCrashlyticsKtx = "19.4.2"
-firebaseAnalyticsKtx = "22.4.0"
-googleGmsGoogleServices = "4.4.2"
-googleFirebaseCrashlytics = "3.0.3"
+firebaseCrashlyticsKtx = "19.4.4"
+firebaseAnalyticsKtx = "22.5.0"
+googleGmsGoogleServices = "4.4.4"
+googleFirebaseCrashlytics = "3.0.6"
 appcompat = "1.7.1"
 material = "1.13.0"
 
@@ -78,33 +70,33 @@ androidx-espresso-core = "3.6.1"
 
 androidx-test-junit = "1.2.1"
 #sqlite = "2.5.0-alpha13"
-sqlite = "2.5.0-alpha01"
+sqlite = "2.6.1"
 
 #sqliteBundledJvm = "2.5.0-beta01"
-sqliteBundledJvm = "2.5.0-rc03"
+sqliteBundledJvm = "2.6.1"
 
 
-kotlinx-coroutines = "1.10.1"
-ktor = "3.0.2"
+kotlinx-coroutines = "1.10.2"
+
 logback = "1.5.12"
 precompose = "1.7.0-alpha01"
 
-activityCompose = "1.10.1"
-navigationCompose = "2.8.9"
+activityCompose = "1.11.0"
+navigationCompose = "2.9.5"
 
-androidx-lifecycle = "2.8.7"
-coreKtx = "1.15.0"
+coreKtx = "1.17.0"
 androidx-core-ktx = "1.12.0"
 androidx-appcompat = "1.6.1"
 androidx-material = "1.11.0"
-datastore = "1.1.4"
+datastore = "1.1.7"
 
 moko = "0.18.0"
-lifecycleViewModel = "2.8.7"
-lifecycleViewModelCompose = "2.8.7"
-kotlinStdlib = "2.1.20"
-runner = "1.6.2"
-core = "1.6.1"
+androidx-lifecycle = "2.9.4"
+lifecycleViewModel = "2.9.4"
+lifecycleViewModelCompose = "2.9.4"
+kotlinStdlib = "2.2.20"
+runner = "1.7.0"
+core = "1.7.0"
 velocity = "1.7"
 
 
@@ -160,13 +152,13 @@ kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-co
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerializationCore" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 ktoml-core = { module = "com.akuleshov7:ktoml-core", version.ref = "ktomlCore" }
-ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktorClientAndroid" }
-ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktorClientContentNegotiation" }
-ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktorClientCore" }
-ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktorClientLogging" }
-ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktorClientOkhttp" }
-ktor-serialization-gson = { module = "io.ktor:ktor-serialization-gson", version.ref = "ktorSerializationGson" }
-ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktorSerializationKotlinxJson" }
+ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-serialization-gson = { module = "io.ktor:ktor-serialization-gson", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor" }
 ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }

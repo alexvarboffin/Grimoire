@@ -21,6 +21,7 @@ import navigation.NavGraph.PACKAGE_MANAGER_ROUTE
 import navigation.NavGraph.TEMPLATES_ROUTE
 import navigation.NavGraph.BATCH_GENERATOR_ROUTE
 import navigation.NavGraph.LIST_GENERATOR_ROUTE
+import navigation.NavGraph.DS_STORE_PARSER_ROUTE
 import presentation.components.TopBar
 
 data class Tool(
@@ -84,6 +85,12 @@ private val tools = listOf(
         description = "Генерация одного файла из списка элементов",
         route = LIST_GENERATOR_ROUTE,
         icon = Icons.Default.FormatListBulleted
+    ),
+    Tool(
+        name = ".DS_Store Parser",
+        description = "Парсинг и просмотр содержимого файлов .DS_Store",
+        route = DS_STORE_PARSER_ROUTE,
+        icon = Icons.Default.DataObject
     )
 )
 
