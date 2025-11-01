@@ -27,4 +27,11 @@ class ListGeneratorProjectListViewModel(
             projectRepository.updateProject(updatedProject)
         }
     }
+
+    fun copyProject(project: ListGeneratorProject) {
+        viewModelScope.launch {
+            val newProject = project.copy(id = 0, name = "${project.name} (копия)")
+            projectRepository.insertProject(newProject)
+        }
+    }
 }

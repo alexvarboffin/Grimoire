@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
@@ -56,7 +57,8 @@ fun ListGeneratorProjectListScreen(
                     project = project,
                     onProjectClick = { onNavigateToProject(project.id) },
                     onDeleteClick = { viewModel.deleteProject(project) },
-                    onRenameClick = { newName -> viewModel.renameProject(project, newName) }
+                    onRenameClick = { newName -> viewModel.renameProject(project, newName) },
+                    onCopyClick = { viewModel.copyProject(project) }
                 )
             }
         }
@@ -68,7 +70,8 @@ private fun ProjectItem(
     project: ListGeneratorProject,
     onProjectClick: () -> Unit,
     onDeleteClick: () -> Unit,
-    onRenameClick: (String) -> Unit
+    onRenameClick: (String) -> Unit,
+    onCopyClick: () -> Unit
 ) {
     var showRenameDialog by remember { mutableStateOf(false) }
 
@@ -119,6 +122,12 @@ private fun ProjectItem(
                 modifier = Modifier.weight(1f)
             )
             Row {
+                IconButton(onClick = onCopyClick) {
+                    Icon(
+                        Icons.Default.ContentCopy,
+                        contentDescription = "Создать копию"
+                    )
+                }
                 IconButton(onClick = { showRenameDialog = true }) {
                     Icon(
                         Icons.Default.Edit,
