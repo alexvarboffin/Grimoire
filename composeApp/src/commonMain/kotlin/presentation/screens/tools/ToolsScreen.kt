@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import navigation.NavGraph
 import navigation.NavGraph.CERT_HASH_ROUTE
 import navigation.NavGraph.KEYSTORE_GENERATOR_ROUTE
 import navigation.NavGraph.PRESET_LIST_ROUTE
@@ -83,7 +84,7 @@ private val tools = listOf(
     Tool(
         name = "List Generator",
         description = "Генерация одного файла из списка элементов",
-        route = LIST_GENERATOR_ROUTE,
+        route = NavGraph.LIST_GENERATOR_PROJECT_LIST_ROUTE,
         icon = Icons.Default.FormatListBulleted
     ),
     Tool(

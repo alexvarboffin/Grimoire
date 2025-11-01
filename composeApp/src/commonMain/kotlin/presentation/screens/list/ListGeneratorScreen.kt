@@ -17,13 +17,49 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.darkrockstudios.libraries.mpfilepicker.FilePicker
 import org.koin.compose.koinInject
+import org.koin.core.parameter.parametersOf
 import presentation.components.TopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ListGeneratorScreen(onNavigateBack: () -> Unit) {
+fun ListGeneratorScreen(projectId: Long?, onNavigateBack: () -> Unit) {
     val viewModel: ListGeneratorViewModel = koinInject()
     val uiState by viewModel.uiState
+    var showSaveProjectDialog by remember { mutableStateOf(false) }
+
+    if (showSaveProjectDialog) {
+        var projectName by remember { mutableStateOf("") }
+        AlertDialog(
+            onDismissRequest = { showSaveProjectDialog = false },
+            title = { Text("Сохранить проект") },
+            text = {
+                OutlinedTextField(
+                    value = projectName,
+                    onValueChange = { projectName = it },
+                    label = { Text("Название проекта") }
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        viewModel.saveProject(projectName)
+                        showSaveProjectDialog = false
+                    }
+                ) {
+                    Text("Сохранить")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showSaveProjectDialog = false }) {
+                    Text("Отмена")
+                }
+            }
+        )
+    }
+
+    LaunchedEffect(projectId) {
+        viewModel.loadProject(projectId)
+    }
 
     Scaffold(
         topBar = {
@@ -54,6 +90,7 @@ fun ListGeneratorScreen(onNavigateBack: () -> Unit) {
                 Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                     Button(onClick = { viewModel.generate() }, modifier = Modifier.weight(1f)) { Text("Сгенерировать") }
                     Button(onClick = { viewModel.save() }, modifier = Modifier.weight(1f)) { Text("Сохранить") }
+                    Button(onClick = { showSaveProjectDialog = true }, modifier = Modifier.weight(1f)) { Text("Сохранить проект") }
                 }
                 TextField(
                     value = uiState.errorMessage ?: uiState.output,
@@ -99,12 +136,12 @@ private fun TemplateSelector(viewModel: ListGeneratorViewModel, uiState: ListGen
 private fun VariableFields(viewModel: ListGeneratorViewModel, uiState: ListGeneratorUiState) {
     uiState.allVariables.forEach { variableName ->
         if (uiState.listVariables.contains(variableName)) {
-            val list = viewModel.variableValues[variableName] as? SnapshotStateList<String>
+            val list = viewModel.variableValues[variableName]?.listValue as? SnapshotStateList<String>
             if (list != null) {
                 ListItemEditor(viewModel, listName = variableName, listItems = list)
             }
         } else {
-            val value = viewModel.variableValues[variableName] as? String
+            val value = viewModel.variableValues[variableName]?.stringValue
             if (value != null) {
                 TextField(
                     value = value,

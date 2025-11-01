@@ -7,10 +7,13 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import com.akuleshov7.ktoml.tree.nodes.TomlNode.Companion.prettyPrint
 import com.example.util.JsonToKotlinGenerator
 import data.certificate.CertificateGrabber
 import data.local.AppDatabase
+import data.local.ListGeneratorProjectDao
 import data.local.PresetDao
+import data.repository.ListGeneratorProjectRepositoryImpl
 import data.repository.PresetRepositoryImpl
 import data.settings.SettingsDataStore
 import domain.certificate.CertificateRepository
@@ -40,11 +43,14 @@ import presentation.screens.batch.BatchGeneratorViewModel
 import presentation.screens.list.ListGeneratorViewModel
 import presentation.screens.dsstore.DSStoreViewModel
 import domain.dsstore.DSStoreParser
+import domain.repository.ListGeneratorProjectRepository
+import io.ktor.http.ContentType.Application.Json
+import kotlinx.serialization.json.Json
+import presentation.screens.list_generator.project_list.ListGeneratorProjectListViewModel
 
 import theme.ThemeManager
 import util.FileProcessor
 import java.io.File
-
 
 val appModule = module {
 // Database
@@ -54,12 +60,15 @@ val appModule = module {
     }
     single { provideHttpClient() }
     single { JsonToKotlinGenerator(get()) }
+    single { Json { prettyPrint = true; encodeDefaults = true; ignoreUnknownKeys = true } }
 
     single<PresetDao> { get<AppDatabase>().presetDao() }
+    single<ListGeneratorProjectDao> { get<AppDatabase>().listGeneratorProjectDao() }
 
     // Repository
     //singleOf(::PresetRepositoryImpl) { bind<PresetRepository>() }
     single<PresetRepository> { PresetRepositoryImpl(get()) }
+    single<ListGeneratorProjectRepository> { ListGeneratorProjectRepositoryImpl(get()) }
 
 
     // DataStore
@@ -93,14 +102,19 @@ val appModule = module {
     single { TemplatesViewModel(get()) }
     factory { (filePath: String) -> TemplateEditViewModel(filePath, get()) }
     single { BatchGeneratorViewModel(get()) }
-    single { ListGeneratorViewModel(get()) }
+    single { ListGeneratorViewModel(get(), get(), get()) }
     single { DSStoreParser() }
     single { DSStoreViewModel(get(), get()) }
+    single { ListGeneratorProjectListViewModel(get()) }
 }
+
+
+
+
 
 private fun getRoomDatabase(builder: RoomDatabase.Builder<AppDatabase>): AppDatabase {
     return builder
-        //.addMigrations(MIGRATIONS)
+        //.addMigrations(MIGRATION_1_2)
         .fallbackToDestructiveMigrationOnDowngrade(true)
         .setDriver(BundledSQLiteDriver())
         .setQueryCoroutineContext(Dispatchers.IO)
@@ -108,7 +122,7 @@ private fun getRoomDatabase(builder: RoomDatabase.Builder<AppDatabase>): AppData
 }
 
 fun provideDatabase(): RoomDatabase.Builder<AppDatabase> {
-    val dbFile = File(System.getProperty("java.io.tmpdir"), "my_room.db")
+    val dbFile = File(System.getProperty("java.io.tmpdir"), "my_room_1.db")
     return Room.databaseBuilder<AppDatabase>(
         name = dbFile.absolutePath,
     )

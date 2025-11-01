@@ -18,6 +18,7 @@ import presentation.screens.templates.TemplateEditScreen
 import presentation.screens.batch.BatchGeneratorScreen
 import presentation.screens.list.ListGeneratorScreen
 import presentation.screens.dsstore.DSStoreScreen
+import presentation.screens.list_generator.project_list.ListGeneratorProjectListScreen
 import java.net.URLDecoder
 import java.net.URLEncoder
 
@@ -36,6 +37,8 @@ object NavGraph {
     const val BATCH_GENERATOR_ROUTE = "batch_generator"
     const val LIST_GENERATOR_ROUTE = "list_generator"
     const val DS_STORE_PARSER_ROUTE = "ds_store_parser"
+    const val LIST_GENERATOR_PROJECT_LIST_ROUTE = "list_generator_project_list"
+    const val LIST_GENERATOR_PROJECT_EDIT_ROUTE = "list_generator_project_edit/{id}"
 }
 
 fun RouteBuilder.mainGraph(navigator: Navigator) {
@@ -134,8 +137,26 @@ fun RouteBuilder.mainGraph(navigator: Navigator) {
         )
     }
 
-    scene(NavGraph.LIST_GENERATOR_ROUTE) {
+    scene(NavGraph.LIST_GENERATOR_PROJECT_LIST_ROUTE) {
+        ListGeneratorProjectListScreen(
+            onNavigateToProject = { projectId ->
+                val route = if (projectId != null) {
+                    "list_generator_project_edit/$projectId"
+                } else {
+                    "list_generator_project_edit/new"
+                }
+                navigator.navigate(route)
+            },
+            onNavigateBack = { navigator.goBack() }
+        )
+    }
+
+    scene(NavGraph.LIST_GENERATOR_PROJECT_EDIT_ROUTE) { backStackEntry ->
+        val projectId = backStackEntry.path<String>("id")?.let { id ->
+            if (id == "new") null else id.toLongOrNull()
+        }
         ListGeneratorScreen(
+            projectId = projectId,
             onNavigateBack = { navigator.goBack() }
         )
     }
