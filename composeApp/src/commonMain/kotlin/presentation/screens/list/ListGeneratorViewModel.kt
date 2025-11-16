@@ -220,7 +220,7 @@ class ListGeneratorViewModel(
         viewModelScope.launch {
             try {
                 val template = uiState.value.selectedTemplate ?: throw IllegalStateException("Шаблон не выбран.")
-                if (uiState.value.listVariables.any { (variableValues[it] as? SnapshotStateList<*>)?.isEmpty() == true }) {
+                if (uiState.value.listVariables.any { (variableValues[it]?.listValue as? SnapshotStateList<*>)?.isEmpty() == true }) {
                     throw IllegalStateException("Один из списков элементов пуст.")
                 }
 
@@ -228,6 +228,10 @@ class ListGeneratorViewModel(
                 val allVars: MutableMap<String, Any> = variableValues.mapValues {
                     it.value.stringValue ?: it.value.listValue ?: ""
                 }.toMutableMap()
+
+                println("--- List Generator ---")
+                println("Template: ${template.path}")
+                println("Variables: $allVars")
 
                 val result = renderTemplate(templateContent, allVars)
                 generatedContent = result

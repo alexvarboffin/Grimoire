@@ -106,3 +106,4 @@ include(":lib")
 include(":core:network")
 
 
+include(":lib2")
