@@ -14,6 +14,7 @@ data class CodegenUiState(
     val specPath: String = "",
     val outputPath: String = "",
     val packageName: String = "a.a.a",
+    val shouldRebuild: Boolean = false,
     val isGenerating: Boolean = false,
     val logs: String = ""
 )
@@ -31,40 +32,69 @@ class CodegenViewModel(
                 settingsDataStore.javaPath,
                 settingsDataStore.specPath,
                 settingsDataStore.outputPath,
-                settingsDataStore.packageName
-            ) { java, spec, output, pkg ->
+                settingsDataStore.packageName,
+                settingsDataStore.shouldRebuild
+            ) { java, spec, output, pkg, rebuild ->
                 _uiState.update { it.copy(
                     javaPath = java,
                     specPath = spec,
                     outputPath = output,
-                    packageName = pkg
+                    packageName = pkg,
+                    shouldRebuild = rebuild
                 ) }
             }.collect()
         }
     }
 
-    fun updateSettings(java: String, spec: String, output: String, pkg: String) {
+    fun updateSettings(java: String, spec: String, output: String, pkg: String, rebuild: Boolean) {
         viewModelScope.launch {
-            settingsDataStore.updateCodegenSettings(java, spec, output, pkg)
+            settingsDataStore.updateCodegenSettings(java, spec, output, pkg, rebuild)
         }
     }
 
     fun generate() {
         val state = _uiState.value
-        _uiState.update { it.copy(isGenerating = true, logs = "--- Starting generation ---\\n") }
+        _uiState.update { it.copy(isGenerating = true, logs = "--- Starting process ---\n") }
         
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 try {
-                    // Собираем генератор перед запуском (опционально, если нужно)
-                    runCommand(listOf("./gradlew.bat", ":my-codegen:build", "-x", "test"))
-
-                    val genJar = "openapi-generator-cli/openapi-generator-cli-7.13.0.jar"
-                    val customJar = "openapi-generator-cli/my-codegen/build/libs/my-codegen-1.0.0.jar"
+                    // Ищем корень проекта, поднимаясь вверх от текущей директории
+                    var currentDir = File(System.getProperty("user.dir"))
+                    var projectRoot: File? = null
                     
+                    while (currentDir.exists()) {
+                        if (File(currentDir, "openapi-generator-cli").exists()) {
+                            projectRoot = currentDir
+                            break
+                        }
+                        currentDir = currentDir.parentFile ?: break
+                    }
+
+                    if (projectRoot == null) {
+                        throw Exception("Could not find project root (directory containing 'openapi-generator-cli') starting from ${System.getProperty("user.dir")}")
+                    }
+                    
+                    updateLog("Project root found: ${projectRoot.absolutePath}\n")
+
+                    // 1. Rebuild if needed
+                    if (state.shouldRebuild) {
+                        updateLog("Rebuilding generator...\n")
+                        val gradlewName = if (System.getProperty("os.name").contains("Win")) "gradlew.bat" else "./gradlew"
+                        runCommand(listOf("cmd", "/c", gradlewName, ":my-codegen:build", "-x", "test"), projectRoot)
+                    }
+
+                    // 2. Пути к JAR делаем абсолютными
+                    val genJar = File(projectRoot, "openapi-generator-cli/openapi-generator-cli-7.13.0.jar").absolutePath
+                    val customJar = File(projectRoot, "openapi-generator-cli/my-codegen/build/libs/my-codegen-1.0.0.jar").absolutePath
+                    
+                    if (!File(customJar).exists()) {
+                        throw Exception("Custom generator JAR not found at $customJar\nPlease enable 'Rebuild Generator' and try again.")
+                    }
+
                     val cmd = listOf(
                         state.javaPath,
-                        "-cp", "$genJar;$customJar",
+                        "-cp", "\"$genJar;$customJar\"",
                         "org.openapitools.codegen.OpenAPIGenerator",
                         "generate",
                         "-i", state.specPath,
@@ -75,36 +105,31 @@ class CodegenViewModel(
                         "--skip-validate-spec"
                     )
                     
-                    runCommand(cmd)
+                    updateLog("Running generation...\n")
+                    runCommand(cmd, projectRoot)
                     
-                    withContext(Dispatchers.Main) {
-                        _uiState.update { it.copy(logs = it.logs + "\\n[SUCCESS] Generation complete!") }
-                    }
+                    updateLog("\n[SUCCESS] All done!")
                 } catch (e: Exception) {
-                    withContext(Dispatchers.Main) {
-                        _uiState.update { it.copy(logs = it.logs + "\\n[ERROR] ${e.message}") }
-                    }
+                    updateLog("\n[ERROR] ${e.message}")
                 } finally {
-                    withContext(Dispatchers.Main) {
-                        _uiState.update { it.copy(isGenerating = false) }
-                    }
+                    _uiState.update { it.copy(isGenerating = false) }
                 }
             }
         }
     }
 
-    private fun runCommand(command: List<String>) {
-        updateLog("\\nExecuting: ${command.joinToString(" ")}\\n")
+    private fun runCommand(command: List<String>, workingDir: File) {
+        updateLog("\nExecuting in ${workingDir.name}: ${command.joinToString(" ")}\n")
         
         val processBuilder = ProcessBuilder(command)
-            .directory(File(".")) // Корень проекта
+            .directory(workingDir)
             .redirectErrorStream(true)
         
         val process = processBuilder.start()
         process.inputStream.bufferedReader().use { reader ->
             var line: String?
             while (reader.readLine().also { line = it } != null) {
-                updateLog(line + "\\n")
+                updateLog(line + "\n")
             }
         }
         val exitCode = process.waitFor()
@@ -114,8 +139,6 @@ class CodegenViewModel(
     }
 
     private fun updateLog(message: String) {
-        viewModelScope.launch {
-            _uiState.update { it.copy(logs = it.logs + message) }
-        }
+        _uiState.update { it.copy(logs = it.logs + message) }
     }
 }

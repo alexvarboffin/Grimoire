@@ -34,13 +34,15 @@ class SettingsDataStore(private val dataStore: DataStore<Preferences>) {
     val specPath: Flow<String> = dataStore.data.map { it[PreferencesKeys.SPEC_PATH] ?: "" }
     val outputPath: Flow<String> = dataStore.data.map { it[PreferencesKeys.OUTPUT_PATH] ?: "" }
     val packageName: Flow<String> = dataStore.data.map { it[PreferencesKeys.PACKAGE_NAME] ?: "a.a.a" }
+    val shouldRebuild: Flow<Boolean> = dataStore.data.map { it[PreferencesKeys.SHOULD_REBUILD] ?: false }
 
-    suspend fun updateCodegenSettings(java: String, spec: String, output: String, pkg: String) {
+    suspend fun updateCodegenSettings(java: String, spec: String, output: String, pkg: String, rebuild: Boolean) {
         dataStore.edit {
             it[PreferencesKeys.JAVA_PATH] = java
             it[PreferencesKeys.SPEC_PATH] = spec
             it[PreferencesKeys.OUTPUT_PATH] = output
             it[PreferencesKeys.PACKAGE_NAME] = pkg
+            it[PreferencesKeys.SHOULD_REBUILD] = rebuild
         }
     }
 
@@ -51,5 +53,6 @@ class SettingsDataStore(private val dataStore: DataStore<Preferences>) {
         val SPEC_PATH = stringPreferencesKey("codegen_spec_path")
         val OUTPUT_PATH = stringPreferencesKey("codegen_output_path")
         val PACKAGE_NAME = stringPreferencesKey("codegen_package_name")
+        val SHOULD_REBUILD = booleanPreferencesKey("codegen_should_rebuild")
     }
 } 

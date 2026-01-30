@@ -41,7 +41,7 @@ object NavGraph {
     const val LIST_GENERATOR_PROJECT_EDIT_ROUTE = "list_generator_project_edit/{id}"
     const val CODEGEN_ROUTE = "codegen"
 }
-}
+
 
 fun RouteBuilder.mainGraph(navigator: Navigator) {
     scene(NavGraph.TOOLS_ROUTE) {
