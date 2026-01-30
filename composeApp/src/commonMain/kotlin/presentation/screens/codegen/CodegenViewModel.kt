@@ -15,6 +15,10 @@ data class CodegenUiState(
     val outputPath: String = "",
     val packageName: String = "a.a.a",
     val shouldRebuild: Boolean = false,
+    val library: String = "jvm-ktor",
+    val serializationLibrary: String = "kotlinx_serialization",
+    val useSealedClasses: Boolean = true,
+    val oneOfInterfaces: Boolean = true,
     val isGenerating: Boolean = false,
     val logs: String = ""
 )
@@ -33,22 +37,40 @@ class CodegenViewModel(
                 settingsDataStore.specPath,
                 settingsDataStore.outputPath,
                 settingsDataStore.packageName,
-                settingsDataStore.shouldRebuild
-            ) { java, spec, output, pkg, rebuild ->
+                settingsDataStore.shouldRebuild,
+                settingsDataStore.library,
+                settingsDataStore.serializationLibrary,
+                settingsDataStore.useSealedClasses,
+                settingsDataStore.oneOfInterfaces
+            ) { args ->
                 _uiState.update { it.copy(
-                    javaPath = java,
-                    specPath = spec,
-                    outputPath = output,
-                    packageName = pkg,
-                    shouldRebuild = rebuild
+                    javaPath = args[0] as String,
+                    specPath = args[1] as String,
+                    outputPath = args[2] as String,
+                    packageName = args[3] as String,
+                    shouldRebuild = args[4] as Boolean,
+                    library = args[5] as String,
+                    serializationLibrary = args[6] as String,
+                    useSealedClasses = args[7] as Boolean,
+                    oneOfInterfaces = args[8] as Boolean
                 ) }
             }.collect()
         }
     }
 
-    fun updateSettings(java: String, spec: String, output: String, pkg: String, rebuild: Boolean) {
+    fun updateSettings(
+        java: String, spec: String, output: String, pkg: String, 
+        rebuild: Boolean, lib: String, serialization: String, 
+        useSealed: Boolean, oneOf: Boolean
+    ) {
         viewModelScope.launch {
-            settingsDataStore.updateCodegenSettings(java, spec, output, pkg, rebuild)
+            settingsDataStore.updateCodegenSettings(java, spec, output, pkg, rebuild, lib, serialization, useSealed, oneOf)
+        }
+    }
+
+    fun resetToDefaults() {
+        viewModelScope.launch {
+            settingsDataStore.resetCodegenSettings()
         }
     }
 
@@ -59,10 +81,8 @@ class CodegenViewModel(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 try {
-                    // Ищем корень проекта, поднимаясь вверх от текущей директории
                     var currentDir = File(System.getProperty("user.dir"))
                     var projectRoot: File? = null
-                    
                     while (currentDir.exists()) {
                         if (File(currentDir, "openapi-generator-cli").exists()) {
                             projectRoot = currentDir
@@ -71,26 +91,28 @@ class CodegenViewModel(
                         currentDir = currentDir.parentFile ?: break
                     }
 
-                    if (projectRoot == null) {
-                        throw Exception("Could not find project root (directory containing 'openapi-generator-cli') starting from ${System.getProperty("user.dir")}")
-                    }
+                    if (projectRoot == null) throw Exception("Project root not found")
                     
                     updateLog("Project root found: ${projectRoot.absolutePath}\n")
 
-                    // 1. Rebuild if needed
                     if (state.shouldRebuild) {
                         updateLog("Rebuilding generator...\n")
                         val gradlewName = if (System.getProperty("os.name").contains("Win")) "gradlew.bat" else "./gradlew"
                         runCommand(listOf("cmd", "/c", gradlewName, ":my-codegen:build", "-x", "test"), projectRoot)
                     }
 
-                    // 2. Пути к JAR делаем абсолютными
                     val genJar = File(projectRoot, "openapi-generator-cli/openapi-generator-cli-7.13.0.jar").absolutePath
                     val customJar = File(projectRoot, "openapi-generator-cli/my-codegen/build/libs/my-codegen-1.0.0.jar").absolutePath
                     
-                    if (!File(customJar).exists()) {
-                        throw Exception("Custom generator JAR not found at $customJar\nPlease enable 'Rebuild Generator' and try again.")
-                    }
+                    if (!File(customJar).exists()) throw Exception("Custom JAR not found. Please Rebuild.")
+
+                    val additionalProps = listOf(
+                        "library=${state.library}",
+                        "serializationLibrary=${state.serializationLibrary}",
+                        "useSealedClasses=${state.useSealedClasses}",
+                        "oneOfInterfaces=${state.oneOfInterfaces}",
+                        "packageName=${state.packageName}"
+                    ).joinToString(",")
 
                     val cmd = listOf(
                         state.javaPath,
@@ -101,13 +123,12 @@ class CodegenViewModel(
                         "-g", "my-codegen",
                         "-o", state.outputPath,
                         "--global-property", "apis,models,supportingFiles,infrastructure",
-                        "--additional-properties", "library=jvm-ktor,serializationLibrary=kotlinx_serialization,useSealedClasses=true,oneOfInterfaces=true,packageName=${state.packageName}",
+                        "--additional-properties", "\"$additionalProps\"",
                         "--skip-validate-spec"
                     )
                     
                     updateLog("Running generation...\n")
                     runCommand(cmd, projectRoot)
-                    
                     updateLog("\n[SUCCESS] All done!")
                 } catch (e: Exception) {
                     updateLog("\n[ERROR] ${e.message}")
@@ -119,23 +140,15 @@ class CodegenViewModel(
     }
 
     private fun runCommand(command: List<String>, workingDir: File) {
-        updateLog("\nExecuting in ${workingDir.name}: ${command.joinToString(" ")}\n")
-        
-        val processBuilder = ProcessBuilder(command)
-            .directory(workingDir)
-            .redirectErrorStream(true)
-        
+        updateLog("\nExecuting: ${command.joinToString(" ")}\n")
+        val processBuilder = ProcessBuilder(command).directory(workingDir).redirectErrorStream(true)
         val process = processBuilder.start()
         process.inputStream.bufferedReader().use { reader ->
             var line: String?
-            while (reader.readLine().also { line = it } != null) {
-                updateLog(line + "\n")
-            }
+            while (reader.readLine().also { line = it } != null) { updateLog(line + "\n") }
         }
         val exitCode = process.waitFor()
-        if (exitCode != 0) {
-            throw Exception("Process failed with exit code $exitCode")
-        }
+        if (exitCode != 0) throw Exception("Exit code $exitCode")
     }
 
     private fun updateLog(message: String) {

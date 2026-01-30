@@ -17,6 +17,7 @@ import presentation.components.TopBar
 import presentation.components.SingleFilePicker
 import presentation.components.DirectoryPickerComponent
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CodegenScreen(
     viewModel: CodegenViewModel,
@@ -30,80 +31,83 @@ fun CodegenScreen(
     var outputPath by remember(uiState.outputPath) { mutableStateOf(uiState.outputPath) }
     var packageName by remember(uiState.packageName) { mutableStateOf(uiState.packageName) }
     var shouldRebuild by remember(uiState.shouldRebuild) { mutableStateOf(uiState.shouldRebuild) }
+    
+    var library by remember(uiState.library) { mutableStateOf(uiState.library) }
+    var serializationLibrary by remember(uiState.serializationLibrary) { mutableStateOf(uiState.serializationLibrary) }
+    var useSealedClasses by remember(uiState.useSealedClasses) { mutableStateOf(uiState.useSealedClasses) }
+    var oneOfInterfaces by remember(uiState.oneOfInterfaces) { mutableStateOf(uiState.oneOfInterfaces) }
 
     var showJavaPicker by remember { mutableStateOf(false) }
     var showSpecPicker by remember { mutableStateOf(false) }
     var showOutPicker by remember { mutableStateOf(false) }
 
+    val libraries = listOf("jvm-ktor", "jvm-okhttp4", "jvm-retrofit2")
+    val serializations = listOf("kotlinx_serialization", "gson", "jackson")
+
     Scaffold(
         topBar = { TopBar(title = "OpenAPI Codegen", onBackClick = onBack) }
     ) { padding ->
         Column(
-            modifier = Modifier
-                .padding(padding)
-                .padding(16.dp)
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
+            modifier = Modifier.padding(padding).padding(16.dp).fillMaxSize().verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            OutlinedTextField(
-                value = javaPath,
-                onValueChange = { javaPath = it },
-                label = { Text("Path to Java EXE") },
-                modifier = Modifier.fillMaxWidth(),
-                trailingIcon = {
-                    IconButton(onClick = { showJavaPicker = true }) {
-                        Icon(Icons.Default.FolderOpen, contentDescription = "Select Java EXE")
+            // Paths
+            OutlinedTextField(value = javaPath, onValueChange = { javaPath = it }, label = { Text("Java EXE Path") }, modifier = Modifier.fillMaxWidth(),
+                trailingIcon = { IconButton(onClick = { showJavaPicker = true }) { Icon(Icons.Default.FolderOpen, null) } })
+            
+            OutlinedTextField(value = specPath, onValueChange = { specPath = it }, label = { Text("OpenAPI Spec Path") }, modifier = Modifier.fillMaxWidth(),
+                trailingIcon = { IconButton(onClick = { showSpecPicker = true }) { Icon(Icons.Default.FolderOpen, null) } })
+            
+            OutlinedTextField(value = outputPath, onValueChange = { outputPath = it }, label = { Text("Output Directory") }, modifier = Modifier.fillMaxWidth(),
+                trailingIcon = { IconButton(onClick = { showOutPicker = true }) { Icon(Icons.Default.FolderOpen, null) } })
+
+            OutlinedTextField(value = packageName, onValueChange = { packageName = it }, label = { Text("Package Name") }, modifier = Modifier.fillMaxWidth())
+
+            // Advanced Options
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                // Library Dropdown
+                var expandedLib by remember { mutableStateOf(false) }
+                ExposedDropdownMenuBox(expanded = expandedLib, onExpandedChange = { expandedLib = it }, modifier = Modifier.weight(1f)) {
+                    OutlinedTextField(value = library, onValueChange = {}, readOnly = true, label = { Text("Library") }, trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedLib) }, modifier = Modifier.menuAnchor())
+                    ExposedDropdownMenu(expanded = expandedLib, onDismissRequest = { expandedLib = false }) {
+                        libraries.forEach { lib -> DropdownMenuItem(text = { Text(lib) }, onClick = { library = lib; expandedLib = false }) }
                     }
                 }
-            )
 
-            OutlinedTextField(
-                value = specPath,
-                onValueChange = { specPath = it },
-                label = { Text("Path to openapi.json") },
-                modifier = Modifier.fillMaxWidth(),
-                trailingIcon = {
-                    IconButton(onClick = { showSpecPicker = true }) {
-                        Icon(Icons.Default.FolderOpen, contentDescription = "Select Spec")
+                // Serialization Dropdown
+                var expandedSer by remember { mutableStateOf(false) }
+                ExposedDropdownMenuBox(expanded = expandedSer, onExpandedChange = { expandedSer = it }, modifier = Modifier.weight(1f)) {
+                    OutlinedTextField(value = serializationLibrary, onValueChange = {}, readOnly = true, label = { Text("Serialization") }, trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedSer) }, modifier = Modifier.menuAnchor())
+                    ExposedDropdownMenu(expanded = expandedSer, onDismissRequest = { expandedSer = false }) {
+                        serializations.forEach { ser -> DropdownMenuItem(text = { Text(ser) }, onClick = { serializationLibrary = ser; expandedSer = false }) }
                     }
                 }
-            )
-
-            OutlinedTextField(
-                value = outputPath,
-                onValueChange = { outputPath = it },
-                label = { Text("Output Directory") },
-                modifier = Modifier.fillMaxWidth(),
-                trailingIcon = {
-                    IconButton(onClick = { showOutPicker = true }) {
-                        Icon(Icons.Default.FolderOpen, contentDescription = "Select Output Dir")
-                    }
-                }
-            )
-
-            OutlinedTextField(
-                value = packageName,
-                onValueChange = { packageName = it },
-                label = { Text("Base Package Name") },
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(
-                    checked = shouldRebuild,
-                    onCheckedChange = { shouldRebuild = it }
-                )
-                Text("Rebuild generator before run (gradlew build)", style = MaterialTheme.typography.bodyMedium)
             }
 
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            // Checkboxes
+            Column {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(checked = useSealedClasses, onCheckedChange = { useSealedClasses = it })
+                    Text("Use Sealed Classes", style = MaterialTheme.typography.bodyMedium)
+                }
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(checked = oneOfInterfaces, onCheckedChange = { oneOfInterfaces = it })
+                    Text("OneOf Interfaces", style = MaterialTheme.typography.bodyMedium)
+                }
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(checked = shouldRebuild, onCheckedChange = { shouldRebuild = it })
+                    Text("Rebuild Generator (gradlew build)", style = MaterialTheme.typography.bodyMedium)
+                }
+            }
+
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Button(
                     onClick = { 
-                        viewModel.updateSettings(javaPath, specPath, outputPath, packageName, shouldRebuild)
+                        viewModel.updateSettings(javaPath, specPath, outputPath, packageName, shouldRebuild, library, serializationLibrary, useSealedClasses, oneOfInterfaces)
                         viewModel.generate() 
                     },
-                    enabled = !uiState.isGenerating
+                    enabled = !uiState.isGenerating,
+                    modifier = Modifier.weight(1f)
                 ) {
                     if (uiState.isGenerating) {
                         CircularProgressIndicator(modifier = Modifier.size(20.dp), color = MaterialTheme.colorScheme.onPrimary, strokeWidth = 2.dp)
@@ -111,50 +115,34 @@ fun CodegenScreen(
                     }
                     Text("Save & Generate")
                 }
+
+                OutlinedButton(
+                    onClick = { viewModel.resetToDefaults() },
+                    enabled = !uiState.isGenerating
+                ) {
+                    Text("Reset Defaults")
+                }
             }
 
+            // Logs
             if (uiState.logs.isNotEmpty()) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                     Text("Logs:", style = MaterialTheme.typography.titleSmall)
-                    TextButton(onClick = {
-                        clipboardManager.setText(AnnotatedString(uiState.logs))
-                    }) {
-                        Icon(Icons.Default.ContentCopy, contentDescription = null, modifier = Modifier.size(18.dp))
+                    TextButton(onClick = { clipboardManager.setText(AnnotatedString(uiState.logs)) }) {
+                        Icon(Icons.Default.ContentCopy, null, modifier = Modifier.size(18.dp))
                         Spacer(Modifier.width(4.dp))
                         Text("Copy")
                     }
                 }
-                Surface(
-                    color = MaterialTheme.colorScheme.surfaceVariant,
-                    modifier = Modifier.fillMaxWidth().heightIn(min = 100.dp, max = 400.dp),
-                    shape = MaterialTheme.shapes.medium
-                ) {
-                    Text(
-                        text = uiState.logs,
-                        modifier = Modifier.padding(8.dp).verticalScroll(rememberScrollState()),
-                        style = MaterialTheme.typography.bodySmall
-                    )
+                Surface(color = MaterialTheme.colorScheme.surfaceVariant, modifier = Modifier.fillMaxWidth().heightIn(min = 100.dp, max = 400.dp), shape = MaterialTheme.shapes.medium) {
+                    Text(text = uiState.logs, modifier = Modifier.padding(8.dp).verticalScroll(rememberScrollState()), style = MaterialTheme.typography.bodySmall)
                 }
             }
         }
     }
 
-    SingleFilePicker(showJavaPicker, fileExtensions = listOf("exe")) { file ->
-        showJavaPicker = false
-        file?.path?.let { javaPath = it }
-    }
-
-    SingleFilePicker(showSpecPicker, fileExtensions = listOf("json", "yaml", "yml")) { file ->
-        showSpecPicker = false
-        file?.path?.let { specPath = it }
-    }
-
-    DirectoryPickerComponent(showOutPicker) { path ->
-        showOutPicker = false
-        path?.let { outputPath = it }
-    }
+    // Pickers
+    SingleFilePicker(showJavaPicker, fileExtensions = listOf("exe")) { file -> showJavaPicker = false; file?.path?.let { javaPath = it } }
+    SingleFilePicker(showSpecPicker, fileExtensions = listOf("json", "yaml", "yml")) { file -> showSpecPicker = false; file?.path?.let { specPath = it } }
+    DirectoryPickerComponent(showOutPicker) { path -> showOutPicker = false; path?.let { outputPath = it } }
 }
