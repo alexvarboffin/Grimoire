@@ -29,8 +29,27 @@ class SettingsDataStore(private val dataStore: DataStore<Preferences>) {
         }
     }
 
+    // Codegen settings
+    val javaPath: Flow<String> = dataStore.data.map { it[PreferencesKeys.JAVA_PATH] ?: "C:\\Program Files\\Java\\jdk-17\\bin\\java.exe" }
+    val specPath: Flow<String> = dataStore.data.map { it[PreferencesKeys.SPEC_PATH] ?: "" }
+    val outputPath: Flow<String> = dataStore.data.map { it[PreferencesKeys.OUTPUT_PATH] ?: "" }
+    val packageName: Flow<String> = dataStore.data.map { it[PreferencesKeys.PACKAGE_NAME] ?: "a.a.a" }
+
+    suspend fun updateCodegenSettings(java: String, spec: String, output: String, pkg: String) {
+        dataStore.edit {
+            it[PreferencesKeys.JAVA_PATH] = java
+            it[PreferencesKeys.SPEC_PATH] = spec
+            it[PreferencesKeys.OUTPUT_PATH] = output
+            it[PreferencesKeys.PACKAGE_NAME] = pkg
+        }
+    }
+
     private object PreferencesKeys {
         val IS_DARK_THEME = booleanPreferencesKey("is_dark_theme")
         val SAVE_PATH = stringPreferencesKey("save_path")
+        val JAVA_PATH = stringPreferencesKey("codegen_java_path")
+        val SPEC_PATH = stringPreferencesKey("codegen_spec_path")
+        val OUTPUT_PATH = stringPreferencesKey("codegen_output_path")
+        val PACKAGE_NAME = stringPreferencesKey("codegen_package_name")
     }
 } 

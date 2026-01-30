@@ -92,6 +92,12 @@ private val tools = listOf(
         description = "Парсинг и просмотр содержимого файлов .DS_Store",
         route = DS_STORE_PARSER_ROUTE,
         icon = Icons.Default.DataObject
+    ),
+    Tool(
+        name = "OpenAPI Codegen",
+        description = "Генерация Kotlin кода по спецификации OpenAPI",
+        route = NavGraph.CODEGEN_ROUTE,
+        icon = Icons.Default.Code
     )
 )
 

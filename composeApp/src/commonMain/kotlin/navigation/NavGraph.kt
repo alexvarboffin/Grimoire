@@ -39,6 +39,8 @@ object NavGraph {
     const val DS_STORE_PARSER_ROUTE = "ds_store_parser"
     const val LIST_GENERATOR_PROJECT_LIST_ROUTE = "list_generator_project_list"
     const val LIST_GENERATOR_PROJECT_EDIT_ROUTE = "list_generator_project_edit/{id}"
+    const val CODEGEN_ROUTE = "codegen"
+}
 }
 
 fun RouteBuilder.mainGraph(navigator: Navigator) {
@@ -164,6 +166,13 @@ fun RouteBuilder.mainGraph(navigator: Navigator) {
     scene(NavGraph.DS_STORE_PARSER_ROUTE) {
         DSStoreScreen(
             onNavigateBack = { navigator.goBack() }
+        )
+    }
+
+    scene(NavGraph.CODEGEN_ROUTE) {
+        presentation.screens.codegen.CodegenScreen(
+            viewModel = org.koin.compose.koinInject(),
+            onBack = { navigator.goBack() }
         )
     }
 }

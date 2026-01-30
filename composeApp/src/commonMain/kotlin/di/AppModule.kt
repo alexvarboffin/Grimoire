@@ -106,6 +106,7 @@ val appModule = module {
     single { DSStoreParser() }
     single { DSStoreViewModel(get(), get()) }
     single { ListGeneratorProjectListViewModel(get()) }
+    single { presentation.screens.codegen.CodegenViewModel(get()) }
 }
 
 
