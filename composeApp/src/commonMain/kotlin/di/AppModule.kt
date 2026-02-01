@@ -67,6 +67,8 @@ val appModule = module {
         single<ListGeneratorProjectDao> { get<AppDatabase>().listGeneratorProjectDao() }
 
         single<data.local.CommandPresetDao> { get<AppDatabase>().commandPresetDao() }
+    single<data.local.CommandHistoryDao> { get<AppDatabase>().commandHistoryDao() }
+    single<data.local.CommandPipelineDao> { get<AppDatabase>().commandPipelineDao() }
 
     
 
@@ -134,7 +136,7 @@ val appModule = module {
 
         single { TomlMergerViewModel(get()) }
 
-        single { SettingsViewModel(get(), get()) }
+        single { SettingsViewModel(get()) }
 
         single { RestClientViewModel(get()) }
 
@@ -158,7 +160,7 @@ val appModule = module {
 
         single { presentation.screens.signer.SignerViewModel(get()) }
 
-        single { presentation.screens.commands.CommandPanelViewModel(get()) }
+        single { presentation.screens.commands.CommandPanelViewModel(get(), get(), get(), get()) }
 
     }
 
@@ -168,7 +170,8 @@ val appModule = module {
 
 private fun getRoomDatabase(builder: RoomDatabase.Builder<AppDatabase>): AppDatabase {
     return builder
-        //.addMigrations(MIGRATION_1_2)
+        .addMigrations(data.local.MIGRATION_3_5)
+        .fallbackToDestructiveMigration(true)
         .fallbackToDestructiveMigrationOnDowngrade(true)
         .setDriver(BundledSQLiteDriver())
         .setQueryCoroutineContext(Dispatchers.IO)
@@ -176,7 +179,7 @@ private fun getRoomDatabase(builder: RoomDatabase.Builder<AppDatabase>): AppData
 }
 
 fun provideDatabase(): RoomDatabase.Builder<AppDatabase> {
-    val dbFile = File(System.getProperty("java.io.tmpdir"), "my_room_1.db")
+    val dbFile = File(System.getProperty("java.io.tmpdir"), "my_room_12.db")
     return Room.databaseBuilder<AppDatabase>(
         name = dbFile.absolutePath,
     )

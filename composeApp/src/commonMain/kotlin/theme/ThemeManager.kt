@@ -21,7 +21,7 @@ class ThemeManager(
 
     fun setDarkTheme(isDark: Boolean) {
         scope.launch {
-            settingsDataStore.setDarkTheme(isDark)
+            settingsDataStore.updateDarkTheme(isDark)
         }
     }
 } 

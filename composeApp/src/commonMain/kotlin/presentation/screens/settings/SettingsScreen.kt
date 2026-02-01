@@ -103,6 +103,40 @@ fun SettingsScreen(
                 }
             }
 
+            // Глобальные переменные
+            OutlinedCard(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text("Глобальные переменные", style = MaterialTheme.typography.titleMedium)
+                    Text("Используйте их в командах как {KEY}", style = MaterialTheme.typography.bodySmall)
+                    
+                    uiState.globalVariables.forEach { (k, v) ->
+                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            OutlinedTextField(value = k, onValueChange = {}, readOnly = true, modifier = Modifier.weight(1f), label = { Text("Ключ") })
+                            OutlinedTextField(value = v, onValueChange = { viewModel.updateGlobalVar(k, it) }, modifier = Modifier.weight(1f), label = { Text("Значение") })
+                            IconButton(onClick = { viewModel.deleteGlobalVar(k) }) { Icon(Icons.Default.Delete, null, tint = MaterialTheme.colorScheme.error) }
+                        }
+                    }
+                    
+                    var newKey by remember { mutableStateOf("") }
+                    var newValue by remember { mutableStateOf("") }
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        OutlinedTextField(value = newKey, onValueChange = { newKey = it }, modifier = Modifier.weight(1f), label = { Text("Новый ключ") })
+                        OutlinedTextField(value = newValue, onValueChange = { newValue = it }, modifier = Modifier.weight(1f), label = { Text("Значение") })
+                        IconButton(onClick = { 
+                            if (newKey.isNotBlank()) {
+                                viewModel.updateGlobalVar(newKey, newValue)
+                                newKey = ""; newValue = ""
+                            }
+                        }) { Icon(Icons.Default.Add, null) }
+                    }
+                }
+            }
+
             // Информация о приложении
             OutlinedCard(
                 modifier = Modifier.fillMaxWidth()
