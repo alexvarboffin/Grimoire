@@ -9,6 +9,9 @@ import domain.repository.AdbRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import org.json.JSONArray
@@ -316,6 +319,109 @@ class AdbRepositoryImpl : AdbRepository {
     override suspend fun executeShellCommand(command: String): String {
         return withContext(Dispatchers.IO) {
             executeCommand(command)
+        }
+    }
+
+    override fun getLogcat(deviceId: String): Flow<String> = channelFlow {
+        val process = Runtime.getRuntime().exec("$adbPath -s $deviceId logcat -v time")
+        val reader = process.inputStream.bufferedReader()
+        
+        launch(Dispatchers.IO) {
+            try {
+                var line: String?
+                while (reader.readLine().also { line = it } != null) {
+                    trySend(line!!)
+                }
+            } catch (e: Exception) {
+                // Ignore
+            } finally {
+                process.destroy()
+            }
+        }
+        
+        awaitClose {
+            process.destroy()
+        }
+    }
+
+    override suspend fun getDeviceInfo(deviceId: String): Map<String, String> = withContext(Dispatchers.IO) {
+        val output = executeCommand("$adbPath -s $deviceId shell getprop")
+        val props = mutableMapOf<String, String>()
+        output.lines().forEach { line ->
+            if (line.contains(": ")) {
+                val key = line.substringBefore(":").trim('[', ']')
+                val value = line.substringAfter(":").trim('[', ']', ' ')
+                props[key] = value
+            }
+        }
+        props
+    }
+
+    override suspend fun takeScreenshot(deviceId: String): ByteArray = withContext(Dispatchers.IO) {
+        val tempFile = File.createTempFile("screenshot", ".png")
+        try {
+            executeCommand("$adbPath -s $deviceId shell screencap -p /sdcard/screenshot.png")
+            executeCommand("$adbPath -s $deviceId pull /sdcard/screenshot.png ${tempFile.absolutePath}")
+            executeCommand("$adbPath -s $deviceId shell rm /sdcard/screenshot.png")
+            tempFile.readBytes()
+        } finally {
+            tempFile.delete()
+        }
+    }
+
+    override suspend fun listFiles(deviceId: String, path: String): List<domain.model.RemoteFile> = withContext(Dispatchers.IO) {
+        val output = executeCommand("$adbPath -s $deviceId shell ls -la $path")
+        output.lines()
+            .filter { it.isNotBlank() && !it.startsWith("total") }
+            .mapNotNull { line ->
+                try {
+                    val parts = line.split(Regex("\\s+"))
+                    if (parts.size < 7) return@mapNotNull null
+                    
+                    val permissions = parts[0]
+                    val isDir = permissions.startsWith("d")
+                    val size = parts[4].toLongOrNull() ?: 0L
+                    val date = parts[5]
+                    val time = parts[6]
+                    val name = parts.subList(7, parts.size).joinToString(" ")
+                    
+                    if (name == "." || name == "..") return@mapNotNull null
+                    
+                    domain.model.RemoteFile(
+                        name = name,
+                        path = if (path.endsWith("/")) "$path$name" else "$path/$name",
+                        isDirectory = isDir,
+                        size = size,
+                        lastModified = "$date $time",
+                        permissions = permissions
+                    )
+                } catch (e: Exception) {
+                    null
+                }
+            }
+    }
+
+    override suspend fun pullFile(deviceId: String, remotePath: String, localPath: String) {
+        withContext(Dispatchers.IO) {
+            executeCommand("$adbPath -s $deviceId pull \"$remotePath\" \"$localPath\"")
+        }
+    }
+
+    override suspend fun pushFile(deviceId: String, localPath: String, remotePath: String) {
+        withContext(Dispatchers.IO) {
+            executeCommand("$adbPath -s $deviceId push \"$localPath\" \"$remotePath\"")
+        }
+    }
+
+    override suspend fun deleteFile(deviceId: String, path: String) {
+        withContext(Dispatchers.IO) {
+            executeCommand("$adbPath -s $deviceId shell rm -rf \"$path\"")
+        }
+    }
+
+    override suspend fun createDirectory(deviceId: String, path: String) {
+        withContext(Dispatchers.IO) {
+            executeCommand("$adbPath -s $deviceId shell mkdir -p \"$path\"")
         }
     }
 

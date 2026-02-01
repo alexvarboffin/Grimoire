@@ -42,6 +42,8 @@ object NavGraph {
     const val CODEGEN_ROUTE = "codegen"
     const val SIGNER_ROUTE = "signer"
     const val COMMAND_PANEL_ROUTE = "command_panel"
+    const val ADB_VIEWER_ROUTE = "adb_viewer"
+    const val FILE_EXPLORER_ROUTE = "file_explorer"
 }
 
 
@@ -187,6 +189,20 @@ fun RouteBuilder.mainGraph(navigator: Navigator) {
 
     scene(NavGraph.COMMAND_PANEL_ROUTE) {
         presentation.screens.commands.CommandPanelScreen(
+            viewModel = org.koin.compose.koinInject(),
+            onBack = { navigator.goBack() }
+        )
+    }
+
+    scene(NavGraph.ADB_VIEWER_ROUTE) {
+        presentation.screens.adbviewer.AdbViewerScreen(
+            viewModel = org.koin.compose.koinInject(),
+            onBack = { navigator.goBack() }
+        )
+    }
+
+    scene(NavGraph.FILE_EXPLORER_ROUTE) {
+        presentation.screens.fileexplorer.FileExplorerScreen(
             viewModel = org.koin.compose.koinInject(),
             onBack = { navigator.goBack() }
         )

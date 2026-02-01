@@ -160,9 +160,13 @@ val appModule = module {
 
         single { presentation.screens.signer.SignerViewModel(get()) }
 
-        single { presentation.screens.commands.CommandPanelViewModel(get(), get(), get(), get()) }
+            single { presentation.screens.commands.CommandPanelViewModel(get(), get(), get(), get()) }
 
-    }
+                single { presentation.screens.adbviewer.AdbViewerViewModel(get()) }
+
+                single { presentation.screens.fileexplorer.FileExplorerViewModel(get()) }
+
+            }
 
 
 

@@ -110,6 +110,18 @@ private val tools = listOf(
         description = "Универсальная панель управления CMD командами",
         route = NavGraph.COMMAND_PANEL_ROUTE,
         icon = Icons.Default.Terminal
+    ),
+    Tool(
+        name = "ADB Viewer",
+        description = "Просмотр логов (Logcat) и информации об устройстве",
+        route = NavGraph.ADB_VIEWER_ROUTE,
+        icon = Icons.Default.DeveloperMode
+    ),
+    Tool(
+        name = "File Explorer",
+        description = "Управление файловой системой устройства (Pull/Push/Delete)",
+        route = NavGraph.FILE_EXPLORER_ROUTE,
+        icon = Icons.Default.FolderZip
     )
 )
 
