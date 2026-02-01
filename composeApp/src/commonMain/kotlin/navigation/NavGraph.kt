@@ -40,6 +40,8 @@ object NavGraph {
     const val LIST_GENERATOR_PROJECT_LIST_ROUTE = "list_generator_project_list"
     const val LIST_GENERATOR_PROJECT_EDIT_ROUTE = "list_generator_project_edit/{id}"
     const val CODEGEN_ROUTE = "codegen"
+    const val SIGNER_ROUTE = "signer"
+    const val COMMAND_PANEL_ROUTE = "command_panel"
 }
 
 
@@ -171,6 +173,20 @@ fun RouteBuilder.mainGraph(navigator: Navigator) {
 
     scene(NavGraph.CODEGEN_ROUTE) {
         presentation.screens.codegen.CodegenScreen(
+            viewModel = org.koin.compose.koinInject(),
+            onBack = { navigator.goBack() }
+        )
+    }
+
+    scene(NavGraph.SIGNER_ROUTE) {
+        presentation.screens.signer.SignerScreen(
+            viewModel = org.koin.compose.koinInject(),
+            onBack = { navigator.goBack() }
+        )
+    }
+
+    scene(NavGraph.COMMAND_PANEL_ROUTE) {
+        presentation.screens.commands.CommandPanelScreen(
             viewModel = org.koin.compose.koinInject(),
             onBack = { navigator.goBack() }
         )

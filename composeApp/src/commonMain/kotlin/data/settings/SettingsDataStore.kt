@@ -39,58 +39,73 @@ class SettingsDataStore(private val dataStore: DataStore<Preferences>) {
     val library: Flow<String> = dataStore.data.map { it[PreferencesKeys.LIBRARY] ?: "jvm-ktor" }
     val serializationLibrary: Flow<String> = dataStore.data.map { it[PreferencesKeys.SERIALIZATION] ?: "kotlinx_serialization" }
     val useSealedClasses: Flow<Boolean> = dataStore.data.map { it[PreferencesKeys.USE_SEALED] ?: true }
-    val oneOfInterfaces: Flow<Boolean> = dataStore.data.map { it[PreferencesKeys.ONE_OF_INTERFACES] ?: true }
-
-    suspend fun resetCodegenSettings() {
-        dataStore.edit {
-            it.remove(PreferencesKeys.JAVA_PATH)
-            it.remove(PreferencesKeys.SPEC_PATH)
-            it.remove(PreferencesKeys.OUTPUT_PATH)
-            it.remove(PreferencesKeys.PACKAGE_NAME)
-            it.remove(PreferencesKeys.SHOULD_REBUILD)
-            it.remove(PreferencesKeys.LIBRARY)
-            it.remove(PreferencesKeys.SERIALIZATION)
-            it.remove(PreferencesKeys.USE_SEALED)
-            it.remove(PreferencesKeys.ONE_OF_INTERFACES)
+        val oneOfInterfaces: Flow<Boolean> = dataStore.data.map { it[PreferencesKeys.ONE_OF_INTERFACES] ?: true }
+    
+        // Signer settings
+        val signerJarPath: Flow<String> = dataStore.data.map { it[PreferencesKeys.SIGNER_JAR_PATH] ?: "" }
+        val lastApkPath: Flow<String> = dataStore.data.map { it[PreferencesKeys.LAST_APK_PATH] ?: "" }
+    
+        suspend fun updateSignerSettings(java: String, jar: String, apk: String) {
+            dataStore.edit {
+                it[PreferencesKeys.JAVA_PATH] = java
+                it[PreferencesKeys.SIGNER_JAR_PATH] = jar
+                it[PreferencesKeys.LAST_APK_PATH] = apk
+            }
+        }
+    
+        suspend fun resetCodegenSettings() {
+            dataStore.edit {
+                it.remove(PreferencesKeys.JAVA_PATH)
+                it.remove(PreferencesKeys.SPEC_PATH)
+                it.remove(PreferencesKeys.OUTPUT_PATH)
+                it.remove(PreferencesKeys.PACKAGE_NAME)
+                it.remove(PreferencesKeys.SHOULD_REBUILD)
+                it.remove(PreferencesKeys.LIBRARY)
+                it.remove(PreferencesKeys.SERIALIZATION)
+                it.remove(PreferencesKeys.USE_SEALED)
+                it.remove(PreferencesKeys.ONE_OF_INTERFACES)
+            }
+        }
+    
+        suspend fun updateCodegenSettings(
+            java: String, 
+            spec: String, 
+            output: String, 
+            pkg: String, 
+            rebuild: Boolean,
+            lib: String,
+            serialization: String,
+            useSealed: Boolean,
+            oneOf: Boolean
+        ) {
+            dataStore.edit {
+                it[PreferencesKeys.JAVA_PATH] = java
+                it[PreferencesKeys.SPEC_PATH] = spec
+                it[PreferencesKeys.OUTPUT_PATH] = output
+                it[PreferencesKeys.PACKAGE_NAME] = pkg
+                it[PreferencesKeys.SHOULD_REBUILD] = rebuild
+                it[PreferencesKeys.LIBRARY] = lib
+                it[PreferencesKeys.SERIALIZATION] = serialization
+                it[PreferencesKeys.USE_SEALED] = useSealed
+                it[PreferencesKeys.ONE_OF_INTERFACES] = oneOf
+            }
+        }
+    
+        private object PreferencesKeys {
+            val IS_DARK_THEME = booleanPreferencesKey("is_dark_theme")
+            val SAVE_PATH = stringPreferencesKey("save_path")
+            val JAVA_PATH = stringPreferencesKey("codegen_java_path")
+            val SPEC_PATH = stringPreferencesKey("codegen_spec_path")
+            val OUTPUT_PATH = stringPreferencesKey("codegen_output_path")
+            val PACKAGE_NAME = stringPreferencesKey("codegen_package_name")
+            val SHOULD_REBUILD = booleanPreferencesKey("codegen_should_rebuild")
+    
+            val LIBRARY = stringPreferencesKey("codegen_library")
+            val SERIALIZATION = stringPreferencesKey("codegen_serialization")
+            val USE_SEALED = booleanPreferencesKey("codegen_use_sealed")
+            val ONE_OF_INTERFACES = booleanPreferencesKey("codegen_one_of_interfaces")
+    
+            val SIGNER_JAR_PATH = stringPreferencesKey("signer_jar_path")
+            val LAST_APK_PATH = stringPreferencesKey("last_apk_path")
         }
     }
-
-    suspend fun updateCodegenSettings(
-        java: String,
-        spec: String,
-        output: String,
-        pkg: String,
-        rebuild: Boolean,
-        lib: String,
-        serialization: String,
-        useSealed: Boolean,
-        oneOf: Boolean
-    ) {
-        dataStore.edit {
-            it[PreferencesKeys.JAVA_PATH] = java
-            it[PreferencesKeys.SPEC_PATH] = spec
-            it[PreferencesKeys.OUTPUT_PATH] = output
-            it[PreferencesKeys.PACKAGE_NAME] = pkg
-            it[PreferencesKeys.SHOULD_REBUILD] = rebuild
-            it[PreferencesKeys.LIBRARY] = lib
-            it[PreferencesKeys.SERIALIZATION] = serialization
-            it[PreferencesKeys.USE_SEALED] = useSealed
-            it[PreferencesKeys.ONE_OF_INTERFACES] = oneOf
-        }
-    }
-
-    private object PreferencesKeys {
-        val IS_DARK_THEME = booleanPreferencesKey("is_dark_theme")
-        val SAVE_PATH = stringPreferencesKey("save_path")
-        val JAVA_PATH = stringPreferencesKey("codegen_java_path")
-        val SPEC_PATH = stringPreferencesKey("codegen_spec_path")
-        val OUTPUT_PATH = stringPreferencesKey("codegen_output_path")
-        val PACKAGE_NAME = stringPreferencesKey("codegen_package_name")
-        val SHOULD_REBUILD = booleanPreferencesKey("codegen_should_rebuild")
-
-        val LIBRARY = stringPreferencesKey("codegen_library")
-        val SERIALIZATION = stringPreferencesKey("codegen_serialization")
-        val USE_SEALED = booleanPreferencesKey("codegen_use_sealed")
-        val ONE_OF_INTERFACES = booleanPreferencesKey("codegen_one_of_interfaces")
-    }
-} 

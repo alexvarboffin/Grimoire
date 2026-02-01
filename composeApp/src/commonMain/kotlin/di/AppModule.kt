@@ -62,52 +62,105 @@ val appModule = module {
     single { JsonToKotlinGenerator(get()) }
     single { Json { prettyPrint = true; encodeDefaults = true; ignoreUnknownKeys = true } }
 
-    single<PresetDao> { get<AppDatabase>().presetDao() }
-    single<ListGeneratorProjectDao> { get<AppDatabase>().listGeneratorProjectDao() }
+        single<PresetDao> { get<AppDatabase>().presetDao() }
 
-    // Repository
-    //singleOf(::PresetRepositoryImpl) { bind<PresetRepository>() }
-    single<PresetRepository> { PresetRepositoryImpl(get()) }
-    single<ListGeneratorProjectRepository> { ListGeneratorProjectRepositoryImpl(get()) }
+        single<ListGeneratorProjectDao> { get<AppDatabase>().listGeneratorProjectDao() }
 
+        single<data.local.CommandPresetDao> { get<AppDatabase>().commandPresetDao() }
 
-    // DataStore
-    single<DataStore<Preferences>> {
-        provideDataStore()
+    
+
+    
+
+        // Repository
+
+        //singleOf(::PresetRepositoryImpl) { bind<PresetRepository>() }
+
+        single<PresetRepository> { PresetRepositoryImpl(get()) }
+
+        single<ListGeneratorProjectRepository> { ListGeneratorProjectRepositoryImpl(get()) }
+
+    
+
+    
+
+        // DataStore
+
+        single<DataStore<Preferences>> {
+
+            provideDataStore()
+
+        }
+
+    
+
+        single { SettingsDataStore(get()) }
+
+    
+
+        // FileSystem
+
+        single { FileSystem.SYSTEM }
+
+    
+
+        // Utils
+
+        single { FileProcessor(get()) }
+
+        single { ThemeManager(get()) }
+
+    
+
+        // ViewModels
+
+        single { PresetListViewModel(get(), get()) }
+
+        factory { (presetId: Long?) -> PresetEditViewModel(get(), presetId, get()) }
+
+    
+
+    
+
+        single<AdbRepository> { provideAdbRepository() }
+
+    
+
+    
+
+        single<CertificateRepository> { CertificateGrabber() }
+
+        single { CertHashViewModel(get()) }
+
+        single { TomlMergerViewModel(get()) }
+
+        single { SettingsViewModel(get(), get()) }
+
+        single { RestClientViewModel(get()) }
+
+        single { PackageManagerViewModel(get()) }
+
+        single { TemplatesViewModel(get()) }
+
+        factory { (filePath: String) -> TemplateEditViewModel(filePath, get()) }
+
+        single { BatchGeneratorViewModel(get()) }
+
+        single { ListGeneratorViewModel(get(), get(), get()) }
+
+        single { DSStoreParser() }
+
+        single { DSStoreViewModel(get(), get()) }
+
+        single { ListGeneratorProjectListViewModel(get()) }
+
+        single { presentation.screens.codegen.CodegenViewModel(get()) }
+
+        single { presentation.screens.signer.SignerViewModel(get()) }
+
+        single { presentation.screens.commands.CommandPanelViewModel(get()) }
+
     }
-
-    single { SettingsDataStore(get()) }
-
-    // FileSystem
-    single { FileSystem.SYSTEM }
-
-    // Utils
-    single { FileProcessor(get()) }
-    single { ThemeManager(get()) }
-
-    // ViewModels
-    single { PresetListViewModel(get(), get()) }
-    factory { (presetId: Long?) -> PresetEditViewModel(get(), presetId, get()) }
-
-
-    single<AdbRepository> { provideAdbRepository() }
-
-
-    single<CertificateRepository> { CertificateGrabber() }
-    single { CertHashViewModel(get()) }
-    single { TomlMergerViewModel(get()) }
-    single { SettingsViewModel(get(), get()) }
-    single { RestClientViewModel(get()) }
-    single { PackageManagerViewModel(get()) }
-    single { TemplatesViewModel(get()) }
-    factory { (filePath: String) -> TemplateEditViewModel(filePath, get()) }
-    single { BatchGeneratorViewModel(get()) }
-    single { ListGeneratorViewModel(get(), get(), get()) }
-    single { DSStoreParser() }
-    single { DSStoreViewModel(get(), get()) }
-    single { ListGeneratorProjectListViewModel(get()) }
-    single { presentation.screens.codegen.CodegenViewModel(get()) }
-}
 
 
 

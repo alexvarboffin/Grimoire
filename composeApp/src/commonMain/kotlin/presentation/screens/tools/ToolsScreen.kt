@@ -98,6 +98,18 @@ private val tools = listOf(
         description = "Генерация Kotlin кода по спецификации OpenAPI",
         route = NavGraph.CODEGEN_ROUTE,
         icon = Icons.Default.Code
+    ),
+    Tool(
+        name = "APK Signer",
+        description = "Подпись APK файлов (uber-apk-signer)",
+        route = NavGraph.SIGNER_ROUTE,
+        icon = Icons.Default.Draw
+    ),
+    Tool(
+        name = "Command Dashboard",
+        description = "Универсальная панель управления CMD командами",
+        route = NavGraph.COMMAND_PANEL_ROUTE,
+        icon = Icons.Default.Terminal
     )
 )
 
