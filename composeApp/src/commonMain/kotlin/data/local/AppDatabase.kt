@@ -11,9 +11,11 @@ import androidx.room.TypeConverters
         data.local.entities.CommandPreset::class,
         data.local.entities.CommandHistory::class,
         data.local.entities.CommandPipeline::class,
-        data.local.entities.PipelineStep::class
+        data.local.entities.PipelineStep::class,
+        data.local.entities.PushConfigEntity::class,
+        data.local.entities.PushDeviceEntity::class
     ],
-    version = 5
+    version = 6
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -22,4 +24,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun commandPresetDao(): CommandPresetDao
     abstract fun commandHistoryDao(): CommandHistoryDao
     abstract fun commandPipelineDao(): CommandPipelineDao
+    abstract fun pushConfigDao(): PushConfigDao
+    abstract fun pushDeviceDao(): PushDeviceDao
 }

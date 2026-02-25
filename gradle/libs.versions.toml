@@ -17,7 +17,7 @@ room = "2.7.1"
 agp = "8.8.1"
 ksp = "2.1.0-1.0.29"
 kotlin = "2.1.0"
-accompanistPermissions = "0.32.0"
+accompanistPermissions = "0.37.3"
 
 
 compileSdk = "36"
@@ -188,6 +188,7 @@ kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", versio
 androidx-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
 androidx-core = { group = "androidx.test", name = "core", version.ref = "core" }
 velocity = { module = "org.apache.velocity:velocity", version.ref = "velocity" }
+google-auth = { module = "com.google.auth:google-auth-library-oauth2-http", version = "1.23.0" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

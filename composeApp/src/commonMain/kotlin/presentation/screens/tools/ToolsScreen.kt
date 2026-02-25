@@ -122,6 +122,18 @@ private val tools = listOf(
         description = "Управление файловой системой устройства (Pull/Push/Delete)",
         route = NavGraph.FILE_EXPLORER_ROUTE,
         icon = Icons.Default.FolderZip
+    ),
+    Tool(
+        name = "Push Tester",
+        description = "Тестирование Push-уведомлений (FCM v1)",
+        route = NavGraph.PUSH_NOTIFICATION_LIST_ROUTE,
+        icon = Icons.Default.NotificationsActive
+    ),
+    Tool(
+        name = "New OS Setup",
+        description = "Установка окружения разработчика (Winget)",
+        route = NavGraph.OS_SETUP_ROUTE,
+        icon = Icons.Default.InstallDesktop
     )
 )
 

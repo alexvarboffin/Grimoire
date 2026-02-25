@@ -79,6 +79,7 @@ kotlin {
             implementation(libs.ktoml.core)
             implementation(libs.logback)
             implementation(libs.velocity)
+            implementation(libs.google.auth)
 
             implementation(libs.room.runtime)
             implementation(libs.androidx.room.runtime)

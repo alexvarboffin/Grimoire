@@ -47,6 +47,7 @@ import domain.repository.ListGeneratorProjectRepository
 import io.ktor.http.ContentType.Application.Json
 import kotlinx.serialization.json.Json
 import presentation.screens.list_generator.project_list.ListGeneratorProjectListViewModel
+import presentation.screens.ossetup.OsSetupViewModel
 
 import theme.ThemeManager
 import util.FileProcessor
@@ -62,119 +63,112 @@ val appModule = module {
     single { JsonToKotlinGenerator(get()) }
     single { Json { prettyPrint = true; encodeDefaults = true; ignoreUnknownKeys = true } }
 
-        single<PresetDao> { get<AppDatabase>().presetDao() }
+    single<PresetDao> { get<AppDatabase>().presetDao() }
 
-        single<ListGeneratorProjectDao> { get<AppDatabase>().listGeneratorProjectDao() }
+    single<ListGeneratorProjectDao> { get<AppDatabase>().listGeneratorProjectDao() }
 
-        single<data.local.CommandPresetDao> { get<AppDatabase>().commandPresetDao() }
+    single<data.local.CommandPresetDao> { get<AppDatabase>().commandPresetDao() }
     single<data.local.CommandHistoryDao> { get<AppDatabase>().commandHistoryDao() }
     single<data.local.CommandPipelineDao> { get<AppDatabase>().commandPipelineDao() }
+    single { get<AppDatabase>().pushConfigDao() }
+    single { get<AppDatabase>().pushDeviceDao() }
 
-    
 
-    
+    // Repository
+    //singleOf(::PresetRepositoryImpl) { bind<PresetRepository>() }
 
-        // Repository
+    single<PresetRepository> { PresetRepositoryImpl(get()) }
 
-        //singleOf(::PresetRepositoryImpl) { bind<PresetRepository>() }
+    single<ListGeneratorProjectRepository> { ListGeneratorProjectRepositoryImpl(get()) }
 
-        single<PresetRepository> { PresetRepositoryImpl(get()) }
 
-        single<ListGeneratorProjectRepository> { ListGeneratorProjectRepositoryImpl(get()) }
+    // DataStore
 
-    
+    single<DataStore<Preferences>> {
 
-    
+        provideDataStore()
 
-        // DataStore
-
-        single<DataStore<Preferences>> {
-
-            provideDataStore()
-
-        }
-
-    
-
-        single { SettingsDataStore(get()) }
-
-    
-
-        // FileSystem
-
-        single { FileSystem.SYSTEM }
-
-    
-
-        // Utils
-
-        single { FileProcessor(get()) }
-
-        single { ThemeManager(get()) }
-
-    
-
-        // ViewModels
-
-        single { PresetListViewModel(get(), get()) }
-
-        factory { (presetId: Long?) -> PresetEditViewModel(get(), presetId, get()) }
-
-    
-
-    
-
-        single<AdbRepository> { provideAdbRepository() }
-
-    
-
-    
-
-        single<CertificateRepository> { CertificateGrabber() }
-
-        single { CertHashViewModel(get()) }
-
-        single { TomlMergerViewModel(get()) }
-
-        single { SettingsViewModel(get()) }
-
-        single { RestClientViewModel(get()) }
-
-        single { PackageManagerViewModel(get()) }
-
-        single { TemplatesViewModel(get()) }
-
-        factory { (filePath: String) -> TemplateEditViewModel(filePath, get()) }
-
-        single { BatchGeneratorViewModel(get()) }
-
-        single { ListGeneratorViewModel(get(), get(), get()) }
-
-        single { DSStoreParser() }
-
-        single { DSStoreViewModel(get(), get()) }
-
-        single { ListGeneratorProjectListViewModel(get()) }
-
-        single { presentation.screens.codegen.CodegenViewModel(get()) }
-
-        single { presentation.screens.signer.SignerViewModel(get()) }
-
-            single { presentation.screens.commands.CommandPanelViewModel(get(), get(), get(), get()) }
-
-                single { presentation.screens.adbviewer.AdbViewerViewModel(get()) }
-
-                single { presentation.screens.fileexplorer.FileExplorerViewModel(get()) }
-
-            }
+    }
 
 
 
+    single { SettingsDataStore(get()) }
+
+
+    // FileSystem
+
+    single { FileSystem.SYSTEM }
+
+
+    // Utils
+
+    single { FileProcessor(get()) }
+
+    single { ThemeManager(get()) }
+
+
+    // ViewModels
+
+    single { PresetListViewModel(get(), get()) }
+
+    factory { (presetId: Long?) -> PresetEditViewModel(get(), presetId, get()) }
+
+
+
+
+
+    single<AdbRepository> { provideAdbRepository() }
+
+
+
+
+
+    single<CertificateRepository> { CertificateGrabber() }
+
+    single { CertHashViewModel(get()) }
+
+    single { TomlMergerViewModel(get()) }
+
+    single { SettingsViewModel(get()) }
+
+    single { RestClientViewModel(get()) }
+
+    single { PackageManagerViewModel(get()) }
+
+    single { TemplatesViewModel(get()) }
+
+    factory { (filePath: String) -> TemplateEditViewModel(filePath, get()) }
+
+    single { BatchGeneratorViewModel(get()) }
+
+    single { ListGeneratorViewModel(get(), get(), get()) }
+
+    single { DSStoreParser() }
+
+    single { DSStoreViewModel(get(), get()) }
+
+    single { ListGeneratorProjectListViewModel(get()) }
+
+    single { presentation.screens.codegen.CodegenViewModel(get()) }
+
+    single { presentation.screens.signer.SignerViewModel(get()) }
+
+    single { presentation.screens.commands.CommandPanelViewModel(get(), get(), get(), get()) }
+
+    single { presentation.screens.adbviewer.AdbViewerViewModel(get()) }
+
+    single { presentation.screens.fileexplorer.FileExplorerViewModel(get()) }
+
+    single { presentation.screens.push.PushNotificationViewModel(get(), get(), get()) }
+    single { OsSetupViewModel() }
+
+}
 
 
 private fun getRoomDatabase(builder: RoomDatabase.Builder<AppDatabase>): AppDatabase {
     return builder
         .addMigrations(data.local.MIGRATION_3_5)
+        .addMigrations(data.local.MIGRATION_5_6)
         .fallbackToDestructiveMigration(true)
         .fallbackToDestructiveMigrationOnDowngrade(true)
         .setDriver(BundledSQLiteDriver())
@@ -188,7 +182,8 @@ fun provideDatabase(): RoomDatabase.Builder<AppDatabase> {
         name = dbFile.absolutePath,
     )
 }
-expect fun provideDataStore() :DataStore<Preferences>
+
+expect fun provideDataStore(): DataStore<Preferences>
 
 expect fun provideHttpClient(): HttpClient
 

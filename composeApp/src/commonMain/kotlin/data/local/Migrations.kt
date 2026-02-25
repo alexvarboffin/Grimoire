@@ -54,3 +54,29 @@ val MIGRATION_3_5 = object : Migration(3, 5) {
         """.trimIndent())
     }
 }
+
+val MIGRATION_5_6 = object : Migration(5, 6) {
+    override fun migrate(connection: SQLiteConnection) {
+        connection.execSQL("""
+            CREATE TABLE IF NOT EXISTS `push_configs` (
+                `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
+                `name` TEXT NOT NULL, 
+                `serviceAccountJsonPath` TEXT NOT NULL, 
+                `createdAt` INTEGER NOT NULL
+            )
+        """.trimIndent())
+
+        connection.execSQL("""
+            CREATE TABLE IF NOT EXISTS `push_devices` (
+                `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
+                `configId` INTEGER NOT NULL, 
+                `name` TEXT NOT NULL, 
+                `token` TEXT NOT NULL, 
+                `createdAt` INTEGER NOT NULL,
+                FOREIGN KEY(`configId`) REFERENCES `push_configs`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE 
+            )
+        """.trimIndent())
+
+        connection.execSQL("CREATE INDEX IF NOT EXISTS `index_push_devices_configId` ON `push_devices` (`configId`)")
+    }
+}

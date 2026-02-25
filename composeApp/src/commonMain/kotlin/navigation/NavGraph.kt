@@ -19,6 +19,7 @@ import presentation.screens.batch.BatchGeneratorScreen
 import presentation.screens.list.ListGeneratorScreen
 import presentation.screens.dsstore.DSStoreScreen
 import presentation.screens.list_generator.project_list.ListGeneratorProjectListScreen
+import presentation.screens.ossetup.OsSetupScreen
 import java.net.URLDecoder
 import java.net.URLEncoder
 
@@ -44,6 +45,9 @@ object NavGraph {
     const val COMMAND_PANEL_ROUTE = "command_panel"
     const val ADB_VIEWER_ROUTE = "adb_viewer"
     const val FILE_EXPLORER_ROUTE = "file_explorer"
+    const val PUSH_NOTIFICATION_LIST_ROUTE = "push_notification_list"
+    const val PUSH_NOTIFICATION_DETAIL_ROUTE = "push_notification_detail/{id}"
+    const val OS_SETUP_ROUTE = "os_setup"
 }
 
 
@@ -203,6 +207,34 @@ fun RouteBuilder.mainGraph(navigator: Navigator) {
 
     scene(NavGraph.FILE_EXPLORER_ROUTE) {
         presentation.screens.fileexplorer.FileExplorerScreen(
+            viewModel = org.koin.compose.koinInject(),
+            onBack = { navigator.goBack() }
+        )
+    }
+
+    scene(NavGraph.PUSH_NOTIFICATION_LIST_ROUTE) {
+        presentation.screens.push.PushNotificationListScreen(
+            viewModel = org.koin.compose.koinInject(),
+            onNavigateToDetail = { id ->
+                navigator.navigate("push_notification_detail/$id")
+            },
+            onBack = { navigator.goBack() }
+        )
+    }
+
+    scene(NavGraph.PUSH_NOTIFICATION_DETAIL_ROUTE) { backStackEntry ->
+        val id = backStackEntry.path<Long>("id")
+        id?.let {
+            presentation.screens.push.PushNotificationDetailScreen(
+                configId = it,
+                viewModel = org.koin.compose.koinInject(),
+                onBack = { navigator.goBack() }
+            )
+        }
+    }
+
+    scene(NavGraph.OS_SETUP_ROUTE) {
+        OsSetupScreen(
             viewModel = org.koin.compose.koinInject(),
             onBack = { navigator.goBack() }
         )
