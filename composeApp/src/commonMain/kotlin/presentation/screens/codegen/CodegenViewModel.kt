@@ -42,7 +42,7 @@ class CodegenViewModel(
                 settingsDataStore.serializationLibrary,
                 settingsDataStore.useSealedClasses,
                 settingsDataStore.oneOfInterfaces
-            ) { args ->
+            ) { args: Array<Any> ->
                 _uiState.update { it.copy(
                     javaPath = args[0] as String,
                     specPath = args[1] as String,
